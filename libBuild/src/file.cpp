@@ -3,11 +3,192 @@
 
 namespace eutil
 {
+#pragma region Filesystem
+
+    bool FileExists(const std::filesystem::path& path)
+    {
+        return std::filesystem::exists(path);
+    }
+
+    bool IsDirectory(const std::filesystem::path& path)
+    {
+        return std::filesystem::is_directory(path);
+    }
+
+    bool IsFile(const std::filesystem::path& path)
+    {
+        return std::filesystem::is_regular_file(path);
+    }
+
+    bool CreateFile(const std::filesystem::path& path)
+    {
+        if (FileExists(path))
+            return false;
+
+        std::ofstream file(path);
+        if (!file.is_open())
+        {
+            elog::Error<"UTIL">("Failed to create file: {}", path.string());
+            return false;
+        }
+
+        file.close();
+        return true;
+    }
+
+    bool CreateDirectory(const std::filesystem::path& path)
+    {
+        if (FileExists(path))
+            return false;
+
+        return std::filesystem::create_directory(path);
+    }
+
+    bool RemoveFile(const std::filesystem::path& path)
+    {
+        if (!IsFile(path))
+            return false;
+
+        return std::filesystem::remove(path);
+    }
+
+    bool RemoveDirectory(const std::filesystem::path& path)
+    {
+        if (!IsDirectory(path))
+            return false;
+
+        return std::filesystem::remove_all(path);
+    }
+
+    bool RenameFile(const std::filesystem::path& old_path, std::string_view new_name)
+    {
+        if (!IsFile(old_path))
+            return false;
+
+        auto new_path = old_path;
+        new_path.replace_filename(new_name);
+
+        std::error_code err;
+        std::filesystem::rename(old_path, new_path, err);
+
+        return err.value() == 0;
+    }
+
+    bool RenameDirectory(const std::filesystem::path& old_path, std::string_view new_name)
+    {
+        if (!IsDirectory(old_path))
+            return false;
+
+        auto new_path = old_path;
+        new_path.replace_filename(new_name);
+
+        std::error_code err;
+        std::filesystem::rename(old_path, new_path, err);
+        return err.value() == 0;
+    }
+
+    bool CopyFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path)
+    {
+        if (!IsFile(old_path))
+            return false;
+
+        return std::filesystem::copy_file(old_path, new_path);
+    }
+
+    bool CopyDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path)
+    {
+        if (!IsDirectory(old_path))
+            return false;
+
+        std::error_code err;
+        std::filesystem::copy(old_path, new_path, err);
+
+        return err.value() == 0;
+    }
+
+    bool MoveFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path)
+    {
+        if (!IsFile(old_path))
+            return false;
+
+        std::error_code err;
+        std::filesystem::rename(old_path, new_path, err);
+
+        return err.value() == 0;
+    }
+
+    bool MoveDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path)
+    {
+        if (!IsDirectory(old_path))
+            return false;
+
+        std::error_code err;
+        std::filesystem::rename(old_path, new_path, err);
+
+        return err.value() == 0;
+    }
+
+    bool IsEmpty(const std::filesystem::path& path)
+    {
+        return std::filesystem::is_empty(path);
+    }
+
+    bool IsReadable(const std::filesystem::path& path)
+    {
+        return (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_read) == std::filesystem::perms::owner_read;
+    }
+
+    bool IsWritable(const std::filesystem::path& path)
+    {
+        return (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_write) == std::filesystem::perms::owner_write;
+    }
+
+    bool IsExecutable(const std::filesystem::path& path)
+    {
+        return (std::filesystem::status(path).permissions() & std::filesystem::perms::owner_exec) == std::filesystem::perms::owner_exec;
+    }
+
+    bool IsHidden(const std::filesystem::path& path)
+    {
+        return path.filename().string().front() == '.';
+    }
+
+#pragma endregion
+
     File::File() = default;
 
-    File::File(const std::filesystem::path& path)
-    : m_path(path)
-    {}
+    File::File(const std::filesystem::path& path, FileOpenMode mode)
+    : m_path(path), m_mode(mode)
+    {
+        switch (m_mode)
+        {
+        case FileOpenMode::Read:
+        {
+            m_openMode = "rb";
+            break;
+        }
+        case FileOpenMode::Write:
+        {
+            m_openMode = "wb";
+            break;
+        }
+        case FileOpenMode::Append:
+        {
+            m_openMode = "ab";
+            break;
+        }
+        case FileOpenMode::ReadWrite:
+        {
+            m_openMode = "r+b";
+            break;
+        }
+        default:
+        {
+            elog::Error<"UTIL">("Invalid file open mode: {}", static_cast<int>(m_mode));
+            break;
+        }
+        }
+    }
 
     File::~File()
     {
@@ -19,7 +200,10 @@ namespace eutil
         if (m_isOpen)
             close();
 
-        m_file = ::fopen(m_path.string().c_str(), "rb");
+        if(!FileExists(m_path))
+            CreateFile(m_path);
+
+        m_file = ::fopen(m_path.string().c_str(), m_openMode.c_str());
         if (m_file == nullptr)
         {
             elog::Error<"UTIL">("Failed to open file: {}", m_path.string());
@@ -80,7 +264,12 @@ namespace eutil
 
         std::vector<uint8_t> buffer(m_size);
 
-        ::fread(buffer.data(), 1, m_size, m_file);
+        auto result = ::fread(buffer.data(), 1, m_size, m_file);
+        if (result != m_size)
+        {
+            elog::Error<"UTIL">("Failed to read from file: {}", m_path.string());
+            return;
+        }
 
         m_buffer.push_back(buffer.data(), m_size);
     }
@@ -93,7 +282,13 @@ namespace eutil
             return;
         }
 
-        ::fwrite(m_buffer.data().get(), 1, m_size, m_file);
+        auto ptr = m_buffer.data().get();
+        auto result = ::fwrite(ptr, 1, m_size, m_file);
+        if (result != m_size)
+        {
+            elog::Error<"UTIL">("Failed to write to file: {}", m_path.string());
+            return;
+        }
     }
 
     File::operator bool() const
