@@ -5,7 +5,7 @@
 
 int main()
 {
-    eUtil::BinaryArrayBuffer buffer;
+    eutil::BinaryArrayBuffer buffer;
 
     buffer.reserve(10);
     ::compare(10, buffer.capacity(), "Capacity after reserve");
