@@ -22,11 +22,13 @@ namespace eutil
 
         void shrink_to_fit();
 
-        template<typename T>
-        void push_back(const T& value);
+        void push_back(const uint8_t* value, size_t size);
 
         template<typename T>
-        T getNextElement();
+        void push_back(const T& value, bool only_str = false);
+
+        template<typename T>
+        T getNextElement(bool only_str = false);
 
         std::shared_ptr<uint8_t[]> data(); 
         std::shared_ptr<const uint8_t[]> data() const;
