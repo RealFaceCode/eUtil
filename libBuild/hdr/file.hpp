@@ -10,12 +10,7 @@ namespace eutil
     public:
         File();
         explicit File(const std::filesystem::path& path);
-        File(const File& other);
-        File(File&& other) noexcept;
         ~File();
-
-        File& operator=(const File& other);
-        File& operator=(File&& other) noexcept;
 
         void open();
         void close();
@@ -29,6 +24,16 @@ namespace eutil
 
         void read();
         void write();
+
+        explicit operator bool() const;
+
+        template<typename T>
+        void push_back(const T& value, bool only_str = false);
+
+        template<typename T>
+        T getNextElement(bool only_str = false);
+
+        std::string toString();
 
     private:
         std::filesystem::path m_path    = "";
