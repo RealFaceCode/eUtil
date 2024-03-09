@@ -5,8 +5,6 @@ project(${PROJECT_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 set(BUILD_EXAMPLES $ENV{eUtil_BUILD_EXAMPLES})
 set(BUILD_TESTING $ENV{eUtil_BUILD_EXAMPLES})
 
-enable_testing()
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES 0)
 set(CMAKE_C_USE_RESPONSE_FILE_FOR_INCLUDES 0)
@@ -37,5 +35,6 @@ if(${BUILD_EXAMPLES})
 endif()
 
 if(${BUILD_TESTING})
+enable_testing()
     add_subdirectory(tests)
 endif()
