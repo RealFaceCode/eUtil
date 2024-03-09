@@ -2,9 +2,7 @@
 
 namespace eutils
 {
-    Bitset::Bitset()
-    {
-    }
+    Bitset::Bitset() = default;
 
     Bitset::Bitset(uint32_t data)
         : m_data(data)
