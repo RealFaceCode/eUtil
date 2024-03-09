@@ -1,0 +1,27 @@
+#pragma once
+
+#include <chrono>
+
+namespace eutil
+{
+    class SignalTimer
+    {
+    public:
+        SignalTimer();
+        explicit SignalTimer(double seconds);
+        ~SignalTimer();
+
+        void start();
+        void stop();
+        void reset();
+
+        double elapsed() const;
+        bool check();
+
+    private:
+        bool m_running = false;
+        double m_seconds = 0;
+        std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
+        std::chrono::time_point<std::chrono::high_resolution_clock> m_elapsed;
+    };
+}
