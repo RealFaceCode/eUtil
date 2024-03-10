@@ -2,12 +2,10 @@
 
 namespace eutil
 {
-    SignalTimer::SignalTimer()
-        : m_running(false)
-    {}
+    SignalTimer::SignalTimer() = default;
 
-    SignalTimer::SignalTimer(double seconds)
-        : m_running(false), m_seconds(seconds)
+    SignalTimer::SignalTimer(double seconds, double secondsActive)
+        : m_seconds(seconds), m_secondsActive(secondsActive)
     {}
 
     SignalTimer::~SignalTimer() = default;
@@ -42,8 +40,9 @@ namespace eutil
     bool SignalTimer::check()
     {
         bool result = elapsed() >= m_seconds;
-        if(result)
+        if(result && elapsed() >= m_seconds + m_secondsActive)
             m_start = std::chrono::high_resolution_clock::now();
+
         return result;
     }
 }
