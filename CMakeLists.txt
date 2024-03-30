@@ -17,14 +17,10 @@ endif()
 
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "libBuild/src/*.cpp")
 
-add_subdirectory(thirdparty/eLog)
-
 if(NOT TARGET ${PROJECT_NAME})
     add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
-    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
     target_include_directories(${PROJECT_NAME} PUBLIC libBuild/hdr)
-    target_include_directories(${PROJECT_NAME} PRIVATE thirdparty/eLog/libBuild/hdr)
-    target_link_libraries(${PROJECT_NAME} eLogLib)
 endif()
 
 message(STATUS "eUtil build examples: " ${BUILD_EXAMPLES})

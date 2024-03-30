@@ -1,5 +1,8 @@
 #include "file.hpp"
-#include "elog.hpp"
+
+#include <fstream>
+#include <cstdint>
+#include <vector>
 
 namespace eutil
 {
@@ -28,7 +31,7 @@ namespace eutil
         std::ofstream file(path);
         if (!file.is_open())
         {
-            elog::Error<"UTIL">("Failed to create file: {}", path.string());
+            //TODO: log error
             return false;
         }
 
@@ -184,7 +187,7 @@ namespace eutil
         }
         default:
         {
-            elog::Error<"UTIL">("Invalid file open mode: {}", static_cast<int>(m_mode));
+            //TODO: log error
             break;
         }
         }
@@ -206,7 +209,7 @@ namespace eutil
         m_file = ::fopen(m_path.string().c_str(), m_openMode.c_str());
         if (m_file == nullptr)
         {
-            elog::Error<"UTIL">("Failed to open file: {}", m_path.string());
+            //TODO: log error
             return;
         }
 
@@ -258,7 +261,7 @@ namespace eutil
     {
         if (!m_isOpen)
         {
-            elog::Error<"UTIL">("File is not open: {}", m_path.string());
+            //TODO: log error
             return;
         }
 
@@ -267,7 +270,7 @@ namespace eutil
         auto result = ::fread(buffer.data(), 1, m_size, m_file);
         if (result != m_size)
         {
-            elog::Error<"UTIL">("Failed to read from file: {}", m_path.string());
+            //TODO: log error
             return;
         }
 
@@ -278,7 +281,7 @@ namespace eutil
     {
         if (!m_isOpen)
         {
-            elog::Error<"UTIL">("File is not open: {}", m_path.string());
+            //TODO: log error
             return;
         }
 
@@ -286,7 +289,7 @@ namespace eutil
         auto result = ::fwrite(ptr, 1, m_size, m_file);
         if (result != m_size)
         {
-            elog::Error<"UTIL">("Failed to write to file: {}", m_path.string());
+            //TODO: log error
             return;
         }
     }
