@@ -13,16 +13,14 @@
 
 namespace eutil
 {
-    struct TaskData {};
-    
-    template<typename DATA, typename RESULT = void>
+    template<typename DATA, typename RESULT = int>
     struct Thread
     {
-        public:
+    public:
         using TaskData = DATA;
         using TaskResult = RESULT;
         using TaskFunc = std::optional<TaskResult> (*)(const TaskData&);
-    public:
+
         Thread() = default;
         explicit Thread(TaskFunc func) : m_func(func) {}
         ~Thread() { stop(); }
@@ -108,20 +106,28 @@ namespace eutil
             if(!m_resultMutex)
                 return std::nullopt;
 
-            std::unique_lock<std::mutex> lock(*m_resultMutex);
+            std::unique_lock lock(*m_resultMutex);
             if (m_results.get()->empty())
                 return std::nullopt;
 
             return *m_results.get();
         }
 
-    private:
-        std::jthread m_thread;
-        std::shared_ptr<std::mutex> m_mutex;
-        std::shared_ptr<std::mutex> m_resultMutex;
-        std::shared_ptr<std::condition_variable> m_cv;
-        std::shared_ptr<std::queue<TaskData>> m_queue = nullptr;
-        std::shared_ptr<std::vector<TaskResult>> m_results = nullptr;
+        void setQueue(std::shared_ptr<std::queue<TaskData>> queue) { m_queue = queue; }
+        void setResults(std::shared_ptr<std::vector<TaskResult>> results) { m_results = results; }
+        void setMutex(std::shared_ptr<std::mutex> mutex) { m_mutex = mutex; }
+        void setResultMutex(std::shared_ptr<std::mutex> mutex) { m_resultMutex = mutex; }
+        void setCV(std::shared_ptr<std::condition_variable> cv) { m_cv = cv; }
+
+        std::jthread& getThread() { return m_thread; }
+
+        private:
+            std::jthread m_thread;
+            std::shared_ptr<std::mutex> m_mutex;
+            std::shared_ptr<std::mutex> m_resultMutex;
+            std::shared_ptr<std::condition_variable> m_cv;
+            std::shared_ptr<std::queue<TaskData>> m_queue = nullptr;
+            std::shared_ptr<std::vector<TaskResult>> m_results = nullptr;
         TaskFunc m_func = nullptr;
     };
 }
