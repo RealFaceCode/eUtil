@@ -274,7 +274,7 @@ namespace eutil
             return;
         }
 
-        m_buffer.push_back(buffer.data(), m_size);
+        m_buffer.push_rawData(buffer.data(), m_size);
     }
 
     void File::write()
