@@ -6,7 +6,7 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "file.cpp")
 
 if(NOT TARGET ${PROJECT_NAME})
     add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+    target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
     target_include_directories(${PROJECT_NAME} PUBLIC libBuild/hdr)
     target_link_libraries(${PROJECT_NAME} PRIVATE eUtil)
     add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})
