@@ -1,4 +1,4 @@
-#pragma ocnce
+#pragma once
 
 #include <cstdint>
 
