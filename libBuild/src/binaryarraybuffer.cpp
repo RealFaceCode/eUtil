@@ -67,7 +67,7 @@ namespace eutil
         }
     }
 
-    void BinaryArrayBuffer::push_back(const uint8_t* value, size_t size)
+    void BinaryArrayBuffer::push_rawData(const uint8_t* value, size_t size)
     {
         if (m_capacity < m_size + size)
         {

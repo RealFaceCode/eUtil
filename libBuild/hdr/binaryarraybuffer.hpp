@@ -22,7 +22,7 @@ namespace eutil
 
         void shrink_to_fit();
 
-        void push_back(const uint8_t* value, size_t size);
+        void push_rawData(const uint8_t* value, size_t size);
 
         template<typename T>
         void push_back(const T& value, bool only_str = false);
