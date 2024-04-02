@@ -3,8 +3,10 @@
 #include <chrono>
 #include <ctime>
 
+#include "defines.hpp"
+
 namespace eutil
 {
-    std::string getCurrentTime(std::string_view format = "%Y-%m-%d %H:%M:%S");
-    auto getCurrentTimeDate(std::string_view timeFormat = "%H:%M:%S", std::string_view dateFormat = "%Y-%m-%d");
+    EUTIL_API std::string getCurrentTime(std::string_view format = "%Y-%m-%d %H:%M:%S");
+    EUTIL_API auto getCurrentTimeDate(std::string_view timeFormat = "%H:%M:%S", std::string_view dateFormat = "%Y-%m-%d");
 }

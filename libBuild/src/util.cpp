@@ -2,7 +2,7 @@
 
 namespace eutil
 {
-    std::string getCurrentTime(std::string_view format)
+    EUTIL_API std::string getCurrentTime(std::string_view format)
     {
         auto now = std::chrono::system_clock::now();
         auto now_c = std::chrono::system_clock::to_time_t(now);
@@ -14,7 +14,7 @@ namespace eutil
         return timeStringStream.str();
     }
 
-    auto getCurrentTimeDate(std::string_view timeFormat, std::string_view dateFormat)
+    EUTIL_API auto getCurrentTimeDate(std::string_view timeFormat, std::string_view dateFormat)
     {
         auto now = std::chrono::system_clock::now();
         auto now_c = std::chrono::system_clock::to_time_t(now);
