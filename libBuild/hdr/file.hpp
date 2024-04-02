@@ -5,24 +5,24 @@
 
 namespace eutil
 {
-    bool FileExists(const std::filesystem::path& path);
-    bool IsDirectory(const std::filesystem::path& path);
-    bool IsFile(const std::filesystem::path& path);
-    bool CreateFile(const std::filesystem::path& path);
-    bool CreateDirectory(const std::filesystem::path& path);
-    bool RemoveFile(const std::filesystem::path& path);
-    bool RemoveDirectory(const std::filesystem::path& path);
-    bool RenameFile(const std::filesystem::path& old_path, std::string_view new_name);
-    bool RenameDirectory(const std::filesystem::path& old_path, std::string_view new_name);
-    bool CopyFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
-    bool CopyDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
-    bool MoveFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
-    bool MoveDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
-    bool IsEmpty(const std::filesystem::path& path);
-    bool IsReadable(const std::filesystem::path& path);
-    bool IsWritable(const std::filesystem::path& path);
-    bool IsExecutable(const std::filesystem::path& path);
-    bool IsHidden(const std::filesystem::path& path);
+    EUTIL_API bool FileExists(const std::filesystem::path& path);
+    EUTIL_API bool IsDirectory(const std::filesystem::path& path);
+    EUTIL_API bool IsFile(const std::filesystem::path& path);
+    EUTIL_API bool CreateFile(const std::filesystem::path& path);
+    EUTIL_API bool CreateDirectory(const std::filesystem::path& path);
+    EUTIL_API bool RemoveFile(const std::filesystem::path& path);
+    EUTIL_API bool RemoveDirectory(const std::filesystem::path& path);
+    EUTIL_API bool RenameFile(const std::filesystem::path& old_path, std::string_view new_name);
+    EUTIL_API bool RenameDirectory(const std::filesystem::path& old_path, std::string_view new_name);
+    EUTIL_API bool CopyFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
+    EUTIL_API bool CopyDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
+    EUTIL_API bool MoveFile(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
+    EUTIL_API bool MoveDirectory(const std::filesystem::path& old_path, const std::filesystem::path& new_path);
+    EUTIL_API bool IsEmpty(const std::filesystem::path& path);
+    EUTIL_API bool IsReadable(const std::filesystem::path& path);
+    EUTIL_API bool IsWritable(const std::filesystem::path& path);
+    EUTIL_API bool IsExecutable(const std::filesystem::path& path);
+    EUTIL_API bool IsHidden(const std::filesystem::path& path);
 
     enum class FileOpenMode
     {
@@ -32,35 +32,35 @@ namespace eutil
         ReadWrite
     };
 
-    struct File
+    struct EUTIL_API File
     {
     public:
-        File();
-        explicit File(const std::filesystem::path& path, FileOpenMode mode);
-        ~File();
+        EUTIL_API File();
+        EUTIL_API explicit File(const std::filesystem::path& path, FileOpenMode mode);
+        EUTIL_API ~File();
 
-        void open();
-        void close();
+        EUTIL_API void open();
+        EUTIL_API void close();
 
-        bool isOpen() const;
+        EUTIL_API bool isOpen() const;
 
-        BinaryArrayBuffer& data();
-        const BinaryArrayBuffer& data() const;
-        std::filesystem::path path() const;
-        size_t size() const;
+        EUTIL_API BinaryArrayBuffer& data();
+        EUTIL_API const BinaryArrayBuffer& data() const;
+        EUTIL_API std::filesystem::path path() const;
+        EUTIL_API size_t size() const;
 
-        void read();
-        void write();
+        EUTIL_API void read();
+        EUTIL_API void write();
 
-        explicit operator bool() const;
-
-        template<typename T>
-        void push_back(const T& value, bool only_str = false);
+        EUTIL_API explicit operator bool() const;
 
         template<typename T>
-        T getNextElement(bool only_str = false);
+        EUTIL_API void push_back(const T& value, bool only_str = false);
 
-        std::string toString();
+        template<typename T>
+        EUTIL_API T getNextElement(bool only_str = false);
+
+        EUTIL_API std::string toString();
 
     private:
         std::filesystem::path m_path    = "";
