@@ -11,10 +11,12 @@
 #include <future>
 #include <iostream>
 
+#include "defines.hpp"
+
 namespace eutil
 {
     template<typename DATA, typename RESULT = int>
-    struct Thread
+    struct EUTIL_API Thread
     {
     public:
         using TaskData = DATA;
@@ -128,6 +130,6 @@ namespace eutil
             std::shared_ptr<std::condition_variable> m_cv;
             std::shared_ptr<std::queue<TaskData>> m_queue = nullptr;
             std::shared_ptr<std::vector<TaskResult>> m_results = nullptr;
-        TaskFunc m_func = nullptr;
+            TaskFunc m_func = nullptr;
     };
 }

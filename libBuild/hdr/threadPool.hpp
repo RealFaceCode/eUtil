@@ -1,11 +1,12 @@
 #pragma once
 
 #include "thread.hpp"
+#include "defines.hpp"
 
 namespace eutil
 {
     template<typename DATA, typename RESULT = int>
-    struct ThreadPool
+    struct EUTIL_API ThreadPool
     {
     public:
         using TaskData = DATA;
