@@ -6,9 +6,9 @@
 
 namespace eutil
 {
-    BinaryArrayBuffer::BinaryArrayBuffer() = default;
+    EUTIL_API BinaryArrayBuffer::BinaryArrayBuffer() = default;
 
-    void BinaryArrayBuffer::reserve(size_t size)
+    EUTIL_API void BinaryArrayBuffer::reserve(size_t size)
     {
         if (m_data == nullptr)
         {
@@ -25,7 +25,7 @@ namespace eutil
         }
     }
 
-    void BinaryArrayBuffer::resize(size_t size)
+    EUTIL_API void BinaryArrayBuffer::resize(size_t size)
     {
         if (size > m_capacity)
         {
@@ -34,29 +34,29 @@ namespace eutil
         m_size = size;
     }
 
-    void BinaryArrayBuffer::clear()
+    EUTIL_API void BinaryArrayBuffer::clear()
     {
         std::fill(m_data.get(), m_data.get() + m_size, 0);
         m_size = 0;
         m_offset = 0;
     }
 
-    size_t BinaryArrayBuffer::size() const
+    EUTIL_API size_t BinaryArrayBuffer::size() const
     {
         return m_size;
     }
 
-    size_t BinaryArrayBuffer::capacity() const
+    EUTIL_API size_t BinaryArrayBuffer::capacity() const
     {
         return m_capacity;
     }
 
-    bool BinaryArrayBuffer::empty() const
+    EUTIL_API bool BinaryArrayBuffer::empty() const
     {
         return m_size == 0;
     }
 
-    void BinaryArrayBuffer::shrink_to_fit()
+    EUTIL_API void BinaryArrayBuffer::shrink_to_fit()
     {
         if (m_capacity > m_size)
         {
@@ -67,7 +67,7 @@ namespace eutil
         }
     }
 
-    void BinaryArrayBuffer::push_rawData(const uint8_t* value, size_t size)
+    EUTIL_API void BinaryArrayBuffer::push_rawData(const uint8_t* value, size_t size)
     {
         if (m_capacity < m_size + size)
         {
@@ -80,7 +80,7 @@ namespace eutil
     }
 
     template<typename T>
-    void BinaryArrayBuffer::push_back(const T& value, bool only_str)
+    EUTIL_API void BinaryArrayBuffer::push_back(const T& value, bool only_str)
     {
         if constexpr (  std::is_same_v<T, std::string> ||
                         std::is_same_v<T, std::string_view> ||
@@ -116,31 +116,31 @@ namespace eutil
         }    
     }
 
-    template void BinaryArrayBuffer::push_back<uint8_t>(const uint8_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<uint16_t>(const uint16_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<uint32_t>(const uint32_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<uint64_t>(const uint64_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<int8_t>(const int8_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<int16_t>(const int16_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<int32_t>(const int32_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<int64_t>(const int64_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<float>(const float& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<double>(const double& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<bool>(const bool& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<char>(const char& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<wchar_t>(const wchar_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<char16_t>(const char16_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<char32_t>(const char32_t& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<std::string>(const std::string& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<std::string_view>(const std::string_view& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<const std::string&>(const std::string& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<std::wstring>(const std::wstring& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<std::wstring_view>(const std::wstring_view& value, bool only_str);
-    template void BinaryArrayBuffer::push_back<const std::wstring&>(const std::wstring& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<uint8_t>(const uint8_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<uint16_t>(const uint16_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<uint32_t>(const uint32_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<uint64_t>(const uint64_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<int8_t>(const int8_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<int16_t>(const int16_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<int32_t>(const int32_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<int64_t>(const int64_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<float>(const float& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<double>(const double& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<bool>(const bool& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<char>(const char& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<wchar_t>(const wchar_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<char16_t>(const char16_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<char32_t>(const char32_t& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<std::string>(const std::string& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<std::string_view>(const std::string_view& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<const std::string&>(const std::string& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<std::wstring>(const std::wstring& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<std::wstring_view>(const std::wstring_view& value, bool only_str);
+    template EUTIL_API void BinaryArrayBuffer::push_back<const std::wstring&>(const std::wstring& value, bool only_str);
 
 
     template<typename T>
-    T BinaryArrayBuffer::getNextElement(bool only_str)
+    EUTIL_API T BinaryArrayBuffer::getNextElement(bool only_str)
     {
         if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>)
         {
@@ -162,30 +162,30 @@ namespace eutil
         }
     }
 
-    template uint8_t BinaryArrayBuffer::getNextElement<uint8_t>(bool only_str);
-    template uint16_t BinaryArrayBuffer::getNextElement<uint16_t>(bool only_str);
-    template uint32_t BinaryArrayBuffer::getNextElement<uint32_t>(bool only_str);
-    template uint64_t BinaryArrayBuffer::getNextElement<uint64_t>(bool only_str);
-    template int8_t BinaryArrayBuffer::getNextElement<int8_t>(bool only_str);
-    template int16_t BinaryArrayBuffer::getNextElement<int16_t>(bool only_str);
-    template int32_t BinaryArrayBuffer::getNextElement<int32_t>(bool only_str);
-    template int64_t BinaryArrayBuffer::getNextElement<int64_t>(bool only_str);
-    template float BinaryArrayBuffer::getNextElement<float>(bool only_str);
-    template double BinaryArrayBuffer::getNextElement<double>(bool only_str);
-    template bool BinaryArrayBuffer::getNextElement<bool>(bool only_str);
-    template char BinaryArrayBuffer::getNextElement<char>(bool only_str);
-    template wchar_t BinaryArrayBuffer::getNextElement<wchar_t>(bool only_str);
-    template char16_t BinaryArrayBuffer::getNextElement<char16_t>(bool only_str);
-    template char32_t BinaryArrayBuffer::getNextElement<char32_t>(bool only_str);
-    template std::string BinaryArrayBuffer::getNextElement<std::string>(bool only_str);
-    template std::wstring BinaryArrayBuffer::getNextElement<std::wstring>(bool only_str);
+    template EUTIL_API uint8_t BinaryArrayBuffer::getNextElement<uint8_t>(bool only_str);
+    template EUTIL_API uint16_t BinaryArrayBuffer::getNextElement<uint16_t>(bool only_str);
+    template EUTIL_API uint32_t BinaryArrayBuffer::getNextElement<uint32_t>(bool only_str);
+    template EUTIL_API uint64_t BinaryArrayBuffer::getNextElement<uint64_t>(bool only_str);
+    template EUTIL_API int8_t BinaryArrayBuffer::getNextElement<int8_t>(bool only_str);
+    template EUTIL_API int16_t BinaryArrayBuffer::getNextElement<int16_t>(bool only_str);
+    template EUTIL_API int32_t BinaryArrayBuffer::getNextElement<int32_t>(bool only_str);
+    template EUTIL_API int64_t BinaryArrayBuffer::getNextElement<int64_t>(bool only_str);
+    template EUTIL_API float BinaryArrayBuffer::getNextElement<float>(bool only_str);
+    template EUTIL_API double BinaryArrayBuffer::getNextElement<double>(bool only_str);
+    template EUTIL_API bool BinaryArrayBuffer::getNextElement<bool>(bool only_str);
+    template EUTIL_API char BinaryArrayBuffer::getNextElement<char>(bool only_str);
+    template EUTIL_API wchar_t BinaryArrayBuffer::getNextElement<wchar_t>(bool only_str);
+    template EUTIL_API char16_t BinaryArrayBuffer::getNextElement<char16_t>(bool only_str);
+    template EUTIL_API char32_t BinaryArrayBuffer::getNextElement<char32_t>(bool only_str);
+    template EUTIL_API std::string BinaryArrayBuffer::getNextElement<std::string>(bool only_str);
+    template EUTIL_API std::wstring BinaryArrayBuffer::getNextElement<std::wstring>(bool only_str);
 
-    std::shared_ptr<uint8_t[]> BinaryArrayBuffer::data()
+    EUTIL_API std::shared_ptr<uint8_t[]> BinaryArrayBuffer::data()
     {
         return m_data;
     }
 
-    std::shared_ptr<const uint8_t[]> BinaryArrayBuffer::data() const
+    EUTIL_API std::shared_ptr<const uint8_t[]> BinaryArrayBuffer::data() const
     {
         return m_data;
     }
