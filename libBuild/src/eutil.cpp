@@ -2,6 +2,6 @@
 
 namespace eutil
 {
-    void Init()
+    EUTIL_API void Init()
     {}
 }
