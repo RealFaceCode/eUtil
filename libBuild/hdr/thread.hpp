@@ -23,11 +23,11 @@ namespace eutil
         using TaskResult = RESULT;
         using TaskFunc = std::optional<TaskResult> (*)(const TaskData&);
 
-        Thread() = default;
-        explicit Thread(TaskFunc func) : m_func(func) {}
-        ~Thread() { stop(); }
+        EUTIL_APIThread() = default;
+        EUTIL_APIexplicit Thread(TaskFunc func) : m_func(func) {}
+        EUTIL_API~Thread() { stop(); }
 
-        void start()
+        EUTIL_APIvoid start()
         {
             if(!m_queue)
                 m_queue = std::make_shared<std::queue<TaskData>>();
@@ -72,7 +72,7 @@ namespace eutil
             });
         }
 
-        void stop()
+        EUTIL_APIvoid stop()
         {
             if (m_thread.joinable())
             {
@@ -83,13 +83,13 @@ namespace eutil
             }
         }
 
-        void join()
+        EUTIL_APIvoid join()
         {
             if (m_thread.joinable())
                 m_thread.join();
         }
 
-        void push(const TaskData& data)
+        EUTIL_APIvoid push(const TaskData& data)
         {
             if(!m_mutex)
                 return;
@@ -101,9 +101,9 @@ namespace eutil
                 m_cv->notify_one();
         }
 
-        void setFunc(TaskFunc func) { m_func = func; }
+        EUTIL_APIvoid setFunc(TaskFunc func) { m_func = func; }
 
-        std::optional<std::vector<TaskResult>> get()
+        EUTIL_APIstd::optional<std::vector<TaskResult>> get()
         {
             if(!m_resultMutex)
                 return std::nullopt;
@@ -115,13 +115,13 @@ namespace eutil
             return *m_results.get();
         }
 
-        void setQueue(std::shared_ptr<std::queue<TaskData>> queue) { m_queue = queue; }
-        void setResults(std::shared_ptr<std::vector<TaskResult>> results) { m_results = results; }
-        void setMutex(std::shared_ptr<std::mutex> mutex) { m_mutex = mutex; }
-        void setResultMutex(std::shared_ptr<std::mutex> mutex) { m_resultMutex = mutex; }
-        void setCV(std::shared_ptr<std::condition_variable> cv) { m_cv = cv; }
+        EUTIL_APIvoid setQueue(std::shared_ptr<std::queue<TaskData>> queue) { m_queue = queue; }
+        EUTIL_APIvoid setResults(std::shared_ptr<std::vector<TaskResult>> results) { m_results = results; }
+        EUTIL_APIvoid setMutex(std::shared_ptr<std::mutex> mutex) { m_mutex = mutex; }
+        EUTIL_APIvoid setResultMutex(std::shared_ptr<std::mutex> mutex) { m_resultMutex = mutex; }
+        EUTIL_APIvoid setCV(std::shared_ptr<std::condition_variable> cv) { m_cv = cv; }
 
-        std::jthread& getThread() { return m_thread; }
+        EUTIL_APIstd::jthread& getThread() { return m_thread; }
 
         private:
             std::jthread m_thread;
