@@ -2,21 +2,23 @@
 
 #include <chrono>
 
+#include "defines.hpp"
+
 namespace eutil
 {
-    class SignalTimer
+    class EUTIL_API SignalTimer
     {
     public:
-        SignalTimer();
-        explicit SignalTimer(double seconds, double secondsActive = 0);
-        ~SignalTimer();
+        EUTIL_API SignalTimer();
+        EUTIL_API explicit SignalTimer(double seconds, double secondsActive = 0);
+        EUTIL_API ~SignalTimer();
 
-        void start();
-        void stop();
-        void reset();
+        EUTIL_API void start();
+        EUTIL_API void stop();
+        EUTIL_API void reset();
 
-        double elapsed() const;
-        bool check();
+        EUTIL_API double elapsed() const;
+        EUTIL_API bool check();
 
     private:
         bool m_running = false;

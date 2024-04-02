@@ -2,34 +2,34 @@
 
 namespace eutil
 {
-    SignalTimer::SignalTimer() = default;
+    EUTIL_API SignalTimer::SignalTimer() = default;
 
-    SignalTimer::SignalTimer(double seconds, double secondsActive)
+    EUTIL_API SignalTimer::SignalTimer(double seconds, double secondsActive)
         : m_seconds(seconds), m_secondsActive(secondsActive)
     {}
 
-    SignalTimer::~SignalTimer() = default;
+    EUTIL_API SignalTimer::~SignalTimer() = default;
 
-    void SignalTimer::start()
+    EUTIL_API void SignalTimer::start()
     {
         m_running = true;
         m_start = std::chrono::high_resolution_clock::now();
     }
 
-    void SignalTimer::stop()
+    EUTIL_API void SignalTimer::stop()
     {
         m_running = false;
         m_elapsed = std::chrono::high_resolution_clock::now();
     }
 
-    void SignalTimer::reset()
+    EUTIL_API void SignalTimer::reset()
     {
         m_running = false;
         m_start = std::chrono::high_resolution_clock::now();
         m_elapsed = std::chrono::high_resolution_clock::now();
     }
 
-    double SignalTimer::elapsed() const
+    EUTIL_API double SignalTimer::elapsed() const
     {
         if (m_running)
             return std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - m_start).count();
@@ -37,7 +37,7 @@ namespace eutil
             return std::chrono::duration_cast<std::chrono::duration<double>>(m_elapsed - m_start).count();
     }
 
-    bool SignalTimer::check()
+    EUTIL_API bool SignalTimer::check()
     {
         bool result = elapsed() >= m_seconds;
         if(result && elapsed() >= m_seconds + m_secondsActive)
