@@ -2,19 +2,21 @@
 
 #include <chrono>
 
+#include "defines.hpp"
+
 namespace eutil
 {
-    class Timer
+    class EUTIL_API Timer
     {
     public:
-            Timer();
-            ~Timer();
+            EUTIL_API Timer();
+            EUTIL_API ~Timer();
 
-            void start();
-            void stop();
-            void reset();
+            EUTIL_API void start();
+            EUTIL_API void stop();
+            EUTIL_API void reset();
 
-            double elapsed() const;
+            EUTIL_API double elapsed() const;
 
         private:
             bool m_running = false;
