@@ -27,6 +27,7 @@ if(NOT TARGET ${PROJECT_NAME})
     add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
     target_include_directories(${PROJECT_NAME} PUBLIC libBuild/hdr)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE EUTIL_EXPORTS)
 endif()
 
 message(STATUS "eUtil build examples: " ${BUILD_EXAMPLES})
