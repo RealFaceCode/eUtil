@@ -13,16 +13,16 @@ namespace eutil
         using TaskResult = RESULT;
         using TaskFunc = Thread<TaskData, TaskResult>::TaskFunc;
 
-        EUTIL_API ThreadPool() = default;
-        EUTIL_API explicit ThreadPool(TaskFunc func, size_t size = 1) 
+        ThreadPool() = default;
+        explicit ThreadPool(TaskFunc func, size_t size = 1) 
         : m_func(func)
         {
             for (size_t i = 0; i < size; ++i)
                 m_threads.emplace_back(std::make_shared<Thread<TaskData, TaskResult>>(m_func));
         }
-        EUTIL_API ~ThreadPool() = default;
+        ~ThreadPool() = default;
 
-        EUTIL_API void start()
+        void start()
         {
             for (auto thread : m_threads)
             {
@@ -35,7 +35,7 @@ namespace eutil
             }
         }
 
-        EUTIL_API void stop()
+        void stop()
         {
             for (auto& thread : m_threads)
             {
@@ -47,20 +47,20 @@ namespace eutil
             join();
         }
 
-        EUTIL_API void join()
+        void join()
         {
             for (auto& thread : m_threads)
                 thread->join();
         }
 
-        EUTIL_API void push(const TaskData& data)
+        void push(const TaskData& data)
         {
             std::unique_lock lock(*m_mutex);
             m_queue->push(data);
             m_cv->notify_one();
         }
 
-        EUTIL_API std::optional<std::vector<TaskResult>> get()
+        std::optional<std::vector<TaskResult>> get()
         {
             if(!m_resultMutex)
                 return std::nullopt;
