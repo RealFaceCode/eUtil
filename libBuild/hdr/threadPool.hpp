@@ -25,8 +25,6 @@ namespace eutil
         void setTaskFunc(TaskFunc func)
         {
             m_func = func;
-            for (auto thread : m_threads)
-                thread->setTaskFunc(m_func);
         }
 
         void setThreadCount(size_t size)
