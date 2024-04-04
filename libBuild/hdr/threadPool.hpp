@@ -22,6 +22,20 @@ namespace eutil
         }
         ~ThreadPool() = default;
 
+        void setTaskFunc(TaskFunc func)
+        {
+            m_func = func;
+            for (auto thread : m_threads)
+                thread->setTaskFunc(m_func);
+        }
+
+        void setThreadCount(size_t size)
+        {
+            m_threads.clear();
+            for (size_t i = 0; i < size; ++i)
+                m_threads.emplace_back(std::make_shared<Thread<TaskData, TaskResult>>(m_func));
+        }
+
         void start()
         {
             for (auto thread : m_threads)
