@@ -161,8 +161,24 @@ namespace eutil
     EUTIL_API File::File() = default;
 
     EUTIL_API File::File(const std::filesystem::path& path, FileOpenMode mode)
-    : m_path(path), m_mode(mode)
+    : m_path(path)
     {
+        setMode(mode);
+    }
+
+    EUTIL_API File::~File()
+    {
+        close();
+    }
+
+    EUTIL_API void File::setPath(const std::filesystem::path& path)
+    {
+        m_path = path;
+    }
+
+    EUTIL_API void File::setMode(FileOpenMode mode)
+    {
+        m_mode = mode;
         switch (m_mode)
         {
         case FileOpenMode::Read:
@@ -193,10 +209,6 @@ namespace eutil
         }
     }
 
-    EUTIL_API File::~File()
-    {
-        close();
-    }
 
     EUTIL_API void File::open()
     {

@@ -39,6 +39,9 @@ namespace eutil
         explicit File(const std::filesystem::path& path, FileOpenMode mode);
         ~File();
 
+        void setPath(const std::filesystem::path& path);
+        void setMode(FileOpenMode mode);
+
         void open();
         void close();
 
