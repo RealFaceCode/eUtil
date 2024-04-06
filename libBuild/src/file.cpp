@@ -206,7 +206,7 @@ namespace eutil
         if(!FileExists(m_path))
             CreateFile(m_path);
 
-        m_file = ::fopen(m_path.string().c_str(), m_openMode.c_str());
+        auto err = ::fopen_s(&m_file, m_path.string().c_str(), m_openMode.c_str());
         if (m_file == nullptr)
         {
             //TODO: log error
@@ -300,7 +300,7 @@ namespace eutil
     }
 
     template<typename T>
-    EUTIL_API void File::push_back(const T& value, bool only_str)
+    void File::push_back(const T& value, bool only_str)
     {
         m_buffer.push_back(value, only_str);
         m_size = m_buffer.size();
@@ -329,7 +329,7 @@ namespace eutil
     template EUTIL_API void File::push_back<const std::wstring&>(const std::wstring& value, bool only_str);
 
     template<typename T>
-    EUTIL_API T File::getNextElement(bool only_str)
+    T File::getNextElement(bool only_str)
     {
         return m_buffer.getNextElement<T>(only_str);
     }

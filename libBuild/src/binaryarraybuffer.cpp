@@ -6,8 +6,6 @@
 
 namespace eutil
 {
-    EUTIL_API BinaryArrayBuffer::BinaryArrayBuffer() = default;
-
     EUTIL_API void BinaryArrayBuffer::reserve(size_t size)
     {
         if (m_data == nullptr)
@@ -80,7 +78,7 @@ namespace eutil
     }
 
     template<typename T>
-    EUTIL_API void BinaryArrayBuffer::push_back(const T& value, bool only_str)
+    void BinaryArrayBuffer::push_back(const T& value, bool only_str)
     {
         if constexpr (  std::is_same_v<T, std::string> ||
                         std::is_same_v<T, std::string_view> ||
@@ -140,12 +138,12 @@ namespace eutil
 
 
     template<typename T>
-    EUTIL_API T BinaryArrayBuffer::getNextElement(bool only_str)
+    T BinaryArrayBuffer::getNextElement(bool only_str)
     {
         if constexpr (std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>)
         {
             T value;
-            auto size = only_str ? m_size :getNextElement<uint64_t>();
+            auto size = only_str ? m_size : getNextElement<uint64_t>();
             const uint8_t* data = m_data.get() + m_offset;
             value.resize(size);
             ::memcpy(value.data(), data, size * sizeof(value[0]));

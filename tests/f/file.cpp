@@ -20,6 +20,7 @@ int main()
     auto first = file.toString();
 
     ::compare("Hello, World!", first, "File read failed.");
+    ::compare(strlen("Hello, World!"), file.size(), "File size dont match.");
 
     file.close();
 

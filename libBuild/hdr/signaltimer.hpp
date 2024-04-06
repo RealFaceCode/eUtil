@@ -9,16 +9,16 @@ namespace eutil
     class EUTIL_API SignalTimer
     {
     public:
-        EUTIL_API SignalTimer();
-        EUTIL_API explicit SignalTimer(double seconds, double secondsActive = 0);
-        EUTIL_API ~SignalTimer();
+        SignalTimer();
+        explicit SignalTimer(double seconds, double secondsActive = 0);
+        ~SignalTimer();
 
-        EUTIL_API void start();
-        EUTIL_API void stop();
-        EUTIL_API void reset();
+        void start();
+        void stop();
+        void reset();
 
-        EUTIL_API double elapsed() const;
-        EUTIL_API bool check();
+        double elapsed() const;
+        bool check();
 
     private:
         bool m_running = false;

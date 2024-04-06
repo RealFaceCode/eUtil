@@ -35,32 +35,32 @@ namespace eutil
     struct EUTIL_API File
     {
     public:
-        EUTIL_API File();
-        EUTIL_API explicit File(const std::filesystem::path& path, FileOpenMode mode);
-        EUTIL_API ~File();
+        File();
+        explicit File(const std::filesystem::path& path, FileOpenMode mode);
+        ~File();
 
-        EUTIL_API void open();
-        EUTIL_API void close();
+        void open();
+        void close();
 
-        EUTIL_API bool isOpen() const;
+        bool isOpen() const;
 
-        EUTIL_API BinaryArrayBuffer& data();
-        EUTIL_API const BinaryArrayBuffer& data() const;
-        EUTIL_API std::filesystem::path path() const;
-        EUTIL_API size_t size() const;
+        BinaryArrayBuffer& data();
+        const BinaryArrayBuffer& data() const;
+        std::filesystem::path path() const;
+        size_t size() const;
 
-        EUTIL_API void read();
-        EUTIL_API void write();
+        void read();
+        void write();
 
-        EUTIL_API explicit operator bool() const;
-
-        template<typename T>
-        EUTIL_API void push_back(const T& value, bool only_str = false);
+        explicit operator bool() const;
 
         template<typename T>
-        EUTIL_API T getNextElement(bool only_str = false);
+        void push_back(const T& value, bool only_str = false);
 
-        EUTIL_API std::string toString();
+        template<typename T>
+        T getNextElement(bool only_str = false);
+
+        std::string toString();
 
     private:
         std::filesystem::path m_path    = "";

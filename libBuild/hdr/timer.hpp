@@ -9,14 +9,14 @@ namespace eutil
     class EUTIL_API Timer
     {
     public:
-            EUTIL_API Timer();
-            EUTIL_API ~Timer();
+            Timer();
+            ~Timer();
 
-            EUTIL_API void start();
-            EUTIL_API void stop();
-            EUTIL_API void reset();
+            void start();
+            void stop();
+            void reset();
 
-            EUTIL_API double elapsed() const;
+            double elapsed() const;
 
         private:
             bool m_running = false;
