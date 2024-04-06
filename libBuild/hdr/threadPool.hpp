@@ -6,7 +6,7 @@
 namespace eutil
 {
     template<typename DATA, typename RESULT = int>
-    struct EUTIL_API ThreadPool
+    struct ThreadPool
     {
     public:
         using TaskData = DATA;

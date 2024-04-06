@@ -16,7 +16,7 @@
 namespace eutil
 {
     template<typename DATA, typename RESULT = int>
-    struct EUTIL_API Thread
+    struct Thread
     {
     public:
         using TaskData = DATA;
