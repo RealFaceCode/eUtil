@@ -58,11 +58,18 @@ namespace eutil
         explicit operator bool() const;
 
         template<typename T>
-        void push_back(const T& value, bool only_str = false);
+        void push_back(const T& value, bool only_str = false)
+        {
+            m_buffer.push_back(value, only_str);
+            m_size = m_buffer.size();
+        }
 
         template<typename T>
-        T getNextElement(bool only_str = false);
-
+        T getNextElement(bool only_str = false)
+        {
+            return m_buffer.getNextElement<T>(only_str);
+        }
+        
         std::string toString();
 
     private:
