@@ -4,7 +4,8 @@
 #include <string>
 #include <string_view>
 #include <memory>
-#include "binaryarraybuffer.hpp"
+
+#include "defines.hpp"
 
 namespace eutil
 {
