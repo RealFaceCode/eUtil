@@ -13,7 +13,7 @@
 namespace eutil 
 {
     template <typename T>
-    concept IsChar = std::is_same_v<T, char> || std::is_same_v<T, wchar_t> || std::is_same_v<T, char16_t> || std::is_same_v<T, char32_t>;
+    concept IsChar = std::is_same_v<T, char> || std::is_same_v<T, uint8_t> || std::is_same_v<T, wchar_t> || std::is_same_v<T, char16_t> || std::is_same_v<T, char32_t>;
     template <typename T>
     concept IsCharPtr = IsChar<T> && std::is_pointer_v<T>;
     template <typename T>
@@ -113,6 +113,9 @@ namespace eutil
     size_t constexpr size() const { return m_buffer.size; }
     size_t constexpr capacity() const { return m_buffer.capacity; }
     size_t constexpr readoffset() const { return m_readoffset; }
+    const uint8_t* data() const { return m_buffer.data; }
+
+    void reserve(size_t size, size_t typeSize = 1) { m_buffer.reserve(size, typeSize); }
 
     private:
         Buffer<uint8_t> m_buffer;
