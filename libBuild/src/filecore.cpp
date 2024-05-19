@@ -239,6 +239,51 @@ namespace eutil
 
         return buffer;
     }
+    
+    EUTIL_API std::shared_ptr<uint8_t[]> ReadFile(std::ifstream& file, size_t size)
+    {
+        if(!file.is_open())
+            return nullptr;
+
+        auto buffer = std::make_shared<uint8_t[]>(size);
+        file.read(reinterpret_cast<char*>(buffer.get()), size);
+        return buffer;
+    }
+
+    EUTIL_API BinaryBuffer ReadFileBuffer(const std::filesystem::path& path)
+    {
+        if (!IsFile(path))
+            return BinaryBuffer();
+
+        auto size = FileSize(path);
+        BinaryBuffer buffer;
+        buffer.reserve(size);
+
+        std::ifstream file(path, std::ios::binary);
+        if (!file.is_open())
+            return buffer;
+
+        auto data = ReadFile(file, size);
+
+        buffer.push(data.get());
+        file.close();
+
+        return buffer;
+    }
+
+    EUTIL_API BinaryBuffer ReadFileBuffer(std::ifstream& file, size_t size)
+    {
+        if(!file.is_open())
+            return BinaryBuffer();
+
+        BinaryBuffer buffer;
+        buffer.reserve(size);
+
+        auto data = ReadFile(file, size);
+        buffer.push(data.get());
+
+        return buffer;
+    }
 
     EUTIL_API bool WriteFile(const std::filesystem::path& path, std::shared_ptr<uint8_t[]> data, size_t size)
     {
@@ -250,6 +295,54 @@ namespace eutil
             return false;
 
         file.write(reinterpret_cast<char*>(data.get()), size);
+        file.close();
+
+        return true;
+    }
+    
+    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::string_view data)
+    {
+        if (IsFile(path))
+            return false;
+
+        std::ofstream file(path);
+        if (!file.is_open())
+            return false;
+
+        file << data;
+        file.close();
+
+        return true;
+    }
+
+    EUTIL_API bool WriteFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size)
+    {
+        if(!file.is_open())
+            return false;
+
+        file.write(reinterpret_cast<char*>(data.get()), size);
+        return true;
+    }
+
+    EUTIL_API bool WriteFile(std::ofstream& file, std::string_view data)
+    {
+        if(!file.is_open())
+            return false;
+
+        file << data;
+        return true;
+    }
+
+    EUTIL_API bool WriteFile(const std::filesystem::path& path, const BinaryBuffer& buffer)
+    {
+        if (IsFile(path))
+            return false;
+
+        std::ofstream file(path, std::ios::binary);
+        if (!file.is_open())
+            return false;
+
+        file.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
         file.close();
 
         return true;
@@ -270,21 +363,6 @@ namespace eutil
         return true;
     }
 
-    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::string_view data)
-    {
-        if (IsFile(path))
-            return false;
-
-        std::ofstream file(path);
-        if (!file.is_open())
-            return false;
-
-        file << data;
-        file.close();
-
-        return true;
-    }
-
     EUTIL_API bool AppendFile(const std::filesystem::path& path, std::string_view data)
     {
         if (!IsFile(path))
@@ -300,25 +378,6 @@ namespace eutil
         return true;
     }
 
-    EUTIL_API std::shared_ptr<uint8_t[]> ReadFile(std::ifstream& file, size_t size)
-    {
-        if(!file.is_open())
-            return nullptr;
-
-        auto buffer = std::make_shared<uint8_t[]>(size);
-        file.read(reinterpret_cast<char*>(buffer.get()), size);
-        return buffer;
-    }
-
-    EUTIL_API bool WriteFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size)
-    {
-        if(!file.is_open())
-            return false;
-
-        file.write(reinterpret_cast<char*>(data.get()), size);
-        return true;
-    }
-
     EUTIL_API bool AppendFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size)
     {
         if(!file.is_open())
@@ -328,21 +387,27 @@ namespace eutil
         return true;
     }
 
-    EUTIL_API bool WriteFile(std::ofstream& file, std::string_view data)
-    {
-        if(!file.is_open())
-            return false;
-
-        file << data;
-        return true;
-    }
-
     EUTIL_API bool AppendFile(std::ofstream& file, std::string_view data)
     {
         if(!file.is_open())
             return false;
             
         file << data;
+        return true;
+    }
+
+    EUTIL_API bool AppendFile(const std::filesystem::path& path, const BinaryBuffer& buffer)
+    {
+        if (!IsFile(path))
+            return false;
+
+        std::ofstream file(path, std::ios::binary | std::ios::app);
+        if (!file.is_open())
+            return false;
+
+        file.write(reinterpret_cast<const char*>(buffer.data()), buffer.size());
+        file.close();
+
         return true;
     }
 } // namespace eutil

@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "defines.hpp"
+#include "binarybuffer.hpp"
 
 namespace eutil
 {
@@ -41,13 +42,17 @@ namespace eutil
     EUTIL_API std::string FileAbsolute(const std::filesystem::path& path);
     EUTIL_API std::string FileNormalize(const std::filesystem::path& path);
     EUTIL_API std::shared_ptr<uint8_t[]> ReadFile(const std::filesystem::path& path, bool putZeroAtEnd = false);
-    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::shared_ptr<uint8_t[]> data, size_t size);
-    EUTIL_API bool AppendFile(const std::filesystem::path& path, std::shared_ptr<uint8_t[]> data, size_t size);
-    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::string_view data);
-    EUTIL_API bool AppendFile(const std::filesystem::path& path, std::string_view data);
     EUTIL_API std::shared_ptr<uint8_t[]> ReadFile(std::ifstream& file, size_t size);
+    EUTIL_API BinaryBuffer ReadFileBuffer(const std::filesystem::path& path);
+    EUTIL_API BinaryBuffer ReadFileBuffer(std::ifstream& file, size_t size);
+    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::shared_ptr<uint8_t[]> data, size_t size);
+    EUTIL_API bool WriteFile(const std::filesystem::path& path, std::string_view data);
     EUTIL_API bool WriteFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size);
-    EUTIL_API bool AppendFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size);
     EUTIL_API bool WriteFile(std::ofstream& file, std::string_view data);
+    EUTIL_API bool WriteFile(const std::filesystem::path& path, const BinaryBuffer& buffer);
+    EUTIL_API bool AppendFile(const std::filesystem::path& path, std::shared_ptr<uint8_t[]> data, size_t size);
+    EUTIL_API bool AppendFile(const std::filesystem::path& path, std::string_view data);
+    EUTIL_API bool AppendFile(std::ofstream& file, std::shared_ptr<uint8_t[]> data, size_t size);
     EUTIL_API bool AppendFile(std::ofstream& file, std::string_view data);
+    EUTIL_API bool AppendFile(const std::filesystem::path& path, const BinaryBuffer& buffer);
 }
