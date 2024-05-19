@@ -1,4 +1,4 @@
-#include "binaryarraybuffer.hpp"
+#include "binarybuffer.hpp"
 
 #include <type_traits>
 #include <algorithm>

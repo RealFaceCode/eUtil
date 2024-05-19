@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "binaryarraybuffer.hpp"
+#include "binarybuffer.hpp"
 #include "../test_util.hpp"
 
 int main()
