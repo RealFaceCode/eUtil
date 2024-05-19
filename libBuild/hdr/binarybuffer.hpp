@@ -110,6 +110,10 @@ namespace eutil
             }
         }
 
+    size_t constexpr size() const { return m_buffer.size; }
+    size_t constexpr capacity() const { return m_buffer.capacity; }
+    size_t constexpr readoffset() const { return m_readoffset; }
+
     private:
         Buffer<uint8_t> m_buffer;
         size_t m_readoffset = 0;
