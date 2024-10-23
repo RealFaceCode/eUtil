@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
-set(PROJECT_NAME f_simple)
+set(PROJECT_NAME fioc)
 project(${PROJECT_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 
-file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "file.cpp")
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "test.cpp")
 
 if(NOT TARGET ${PROJECT_NAME})
     add_executable(${PROJECT_NAME} ${SOURCE_FILES})

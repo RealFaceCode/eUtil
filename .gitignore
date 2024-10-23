@@ -11,3 +11,4 @@ build-UNIX/
 main.cpp
 buildtest/
 old/
+libBuild/oldcode/
