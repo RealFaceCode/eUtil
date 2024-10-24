@@ -12,7 +12,7 @@ int main()
     std::string readData((char*)(buffer));
 
     compare("Hello, World!", readData, "fios File I/O test");
-    
+
     free(buffer);
 
     return ::FAILED;
