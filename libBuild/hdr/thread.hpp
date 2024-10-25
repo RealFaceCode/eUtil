@@ -10,6 +10,7 @@
 #include <memory>
 #include <future>
 #include <iostream>
+#include <optional>
 
 #include "defines.hpp"
 
