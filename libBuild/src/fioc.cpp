@@ -52,26 +52,47 @@ namespace eutil::fioc
 
     EUTIL_API bool CreateDirectory(const char* path)
     {
+        std::filesystem::path p(path);
+        if(p.has_filename())
+            return false;
+
         return std::filesystem::create_directory(path);
     }
 
     EUTIL_API bool CreateDirectoryRecursive(const char* path)
     {
-        return std::filesystem::create_directories(path);
+        std::filesystem::path p(path);
+        //cut filename and extension if exists
+        if(p.has_filename())
+            p = p.parent_path();
+
+        return std::filesystem::create_directories(p);
     }
 
     EUTIL_API bool RemoveDirectory(const char* path)
     {
+        std::filesystem::path p(path);
+        if(p.has_filename())
+            return false;
+
         return std::filesystem::remove(path);
     }
 
     EUTIL_API void CopyDirectory(const char* src, const char* dst)
     {
+        std::filesystem::path s(src), d(dst);
+        if(s.has_filename() || d.has_filename())
+            return;
+
         std::filesystem::copy(src, dst, std::filesystem::copy_options::recursive);
     }
 
     EUTIL_API void MoveDirectory(const char* src, const char* dst)
     {
+        std::filesystem::path s(src), d(dst);
+        if(s.has_filename() || d.has_filename())
+            return;
+
         std::filesystem::rename(src, dst);
     }
 
