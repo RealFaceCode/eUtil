@@ -66,6 +66,9 @@ namespace eutil::fioc
         if(p.has_filename())
             p = p.parent_path();
 
+        if(p.empty())
+            return false;
+
         return std::filesystem::create_directories(p);
     }
 
