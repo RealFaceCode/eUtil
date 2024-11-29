@@ -111,4 +111,9 @@ namespace eutil::idp
     {
         return *id;
     }
+
+    constexpr ID &ID::operator=(const ID &) noexcept
+    {
+        return *this;
+    }
 }
