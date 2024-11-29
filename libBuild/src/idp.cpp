@@ -112,8 +112,17 @@ namespace eutil::idp
         return *id;
     }
 
-    constexpr ID &ID::operator=(const ID &) noexcept
+    constexpr ID &ID::operator=(const ID &other) noexcept
     {
+        id = other.id;
+        pool = other.pool;
+        return *this;
+    }
+
+    constexpr ID &ID::operator=(ID &&other) noexcept
+    {
+        id = std::move(other.id);
+        pool = std::move(other.pool);
         return *this;
     }
 }

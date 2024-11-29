@@ -46,6 +46,7 @@ namespace eutil::idp
         uint64_t get() const;
 
         constexpr ID &operator=(const ID &) noexcept;
+        constexpr ID &operator=(ID &&) noexcept;
 
     private:
         std::shared_ptr<uint64_t> id;
