@@ -17,9 +17,9 @@ namespace eutil::idp
 
     IDPool::~IDPool()
     {
-        for(auto& id : idList)
+        for(auto it = idList.end(); it != idList.begin(); --it)
         {
-            releaseID(*id);
+            releaseID(**it);
         }
     }
 
