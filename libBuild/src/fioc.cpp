@@ -11,6 +11,11 @@ namespace eutil::fioc
         return std::filesystem::exists(path);
     }
 
+    EUTIL_API bool FileExists(const std::filesystem::path& path)
+    {
+        return std::filesystem::exists(path);
+    }
+
     EUTIL_API bool CreateFile(const char* path)
     {
         if(FileExists(path))
@@ -25,7 +30,28 @@ namespace eutil::fioc
         return true;
     }
 
+    EUTIL_API bool CreateFile(const std::filesystem::path& path)
+    {
+        if(FileExists(path))
+            return false;
+        
+        FILE* file = nullptr;
+        fopen_s(&file, path.string().c_str(), "w");
+        if(file == nullptr)
+            return false;
+
+        fclose(file);
+        return true;
+    }
+
+
+
     EUTIL_API bool RemoveFile(const char* path)
+    {
+        return std::filesystem::remove(path);
+    }
+
+    EUTIL_API bool RemoveFile(const std::filesystem::path& path)
     {
         return std::filesystem::remove(path);
     }
@@ -35,7 +61,17 @@ namespace eutil::fioc
         return std::filesystem::copy_file(src, dst);
     }
 
+    EUTIL_API bool CopyFile(const std::filesystem::path& src, const std::filesystem::path& dst)
+    {
+        return std::filesystem::copy_file(src, dst);
+    }
+
     EUTIL_API void MoveFile(const char* src, const char* dst)
+    {
+        std::filesystem::rename(src, dst);
+    }
+
+    EUTIL_API void MoveFile(const std::filesystem::path& src, const std::filesystem::path& dst)
     {
         std::filesystem::rename(src, dst);
     }
@@ -45,7 +81,17 @@ namespace eutil::fioc
         MoveFile(src, dst);
     }
 
+    EUTIL_API void RenameFile(const std::filesystem::path& src, const std::filesystem::path& dst)
+    {
+        MoveFile(src, dst);
+    }
+
     EUTIL_API bool DirectoryExists(const char* path)
+    {
+        return std::filesystem::is_directory(path);
+    }
+
+    EUTIL_API bool DirectoryExists(const std::filesystem::path& path)
     {
         return std::filesystem::is_directory(path);
     }
@@ -59,7 +105,28 @@ namespace eutil::fioc
         return std::filesystem::create_directory(path);
     }
 
+    EUTIL_API bool CreateDirectory(const std::filesystem::path& path)
+    {
+        if(path.has_extension())
+            return false;
+
+        return std::filesystem::create_directory(path);
+    }
+
     EUTIL_API bool CreateDirectoryRecursive(const char* path)
+    {
+        std::filesystem::path p(path);
+        //cut filename and extension if exists
+        if(p.has_extension())
+            p = p.parent_path();
+
+        if(p.empty())
+            return false;
+
+        return std::filesystem::create_directories(p);
+    }
+
+    EUTIL_API bool CreateDirectoryRecursive(const std::filesystem::path& path)
     {
         std::filesystem::path p(path);
         //cut filename and extension if exists
@@ -81,10 +148,26 @@ namespace eutil::fioc
         return std::filesystem::remove(path);
     }
 
+    EUTIL_API bool RemoveDirectory(const std::filesystem::path& path)
+    {
+        if(path.has_extension())
+            return false;
+
+        return std::filesystem::remove(path);
+    }
+
     EUTIL_API void CopyDirectory(const char* src, const char* dst)
     {
         std::filesystem::path s(src), d(dst);
         if(s.has_extension() || d.has_extension())
+            return;
+
+        std::filesystem::copy(src, dst, std::filesystem::copy_options::recursive);
+    }
+
+    EUTIL_API void CopyDirectory(const std::filesystem::path& src, const std::filesystem::path& dst)
+    {
+        if(src.has_extension() || dst.has_extension())
             return;
 
         std::filesystem::copy(src, dst, std::filesystem::copy_options::recursive);
@@ -99,7 +182,20 @@ namespace eutil::fioc
         std::filesystem::rename(src, dst);
     }
 
+    EUTIL_API void MoveDirectory(const std::filesystem::path& src, const std::filesystem::path& dst)
+    {
+        if(src.has_extension() || dst.has_extension())
+            return;
+
+        std::filesystem::rename(src, dst);
+    }
+
     EUTIL_API void RenameDirectory(const char* src, const char* dst)
+    {
+        MoveDirectory(src, dst);
+    }
+
+    EUTIL_API void RenameDirectory(const std::filesystem::path& src, const std::filesystem::path& dst)
     {
         MoveDirectory(src, dst);
     }

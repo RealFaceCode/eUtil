@@ -2,23 +2,37 @@
 
 #include <vector>
 #include <string>
+#include <filesystem>
 #include "defines.hpp"
 
 namespace eutil::fioc 
 {
     EUTIL_API bool FileExists(const char* path);
+    EUTIL_API bool FileExists(const std::filesystem::path& path);
     EUTIL_API bool CreateFile(const char* path);
+    EUTIL_API bool CreateFile(const std::filesystem::path& path);
     EUTIL_API bool RemoveFile(const char* path);
+    EUTIL_API bool RemoveFile(const std::filesystem::path& path);
     EUTIL_API bool CopyFile(const char* src, const char* dst);
+    EUTIL_API bool CopyFile(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API void MoveFile(const char* src, const char* dst);
+    EUTIL_API void MoveFile(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API void RenameFile(const char* src, const char* dst);
+    EUTIL_API void RenameFile(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API bool DirectoryExists(const char* path);
+    EUTIL_API bool DirectoryExists(const std::filesystem::path& path);
     EUTIL_API bool CreateDirectory(const char* path);
+    EUTIL_API bool CreateDirectory(const std::filesystem::path& path);
     EUTIL_API bool CreateDirectoryRecursive(const char* path);
+    EUTIL_API bool CreateDirectoryRecursive(const std::filesystem::path& path);
     EUTIL_API bool RemoveDirectory(const char* path);
+    EUTIL_API bool RemoveDirectory(const std::filesystem::path& path);
     EUTIL_API void CopyDirectory(const char* src, const char* dst);
+    EUTIL_API void CopyDirectory(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API void MoveDirectory(const char* src, const char* dst);
+    EUTIL_API void MoveDirectory(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API void RenameDirectory(const char* src, const char* dst);
+    EUTIL_API void RenameDirectory(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API bool GetFileList(const char* path, std::vector<std::string>& files, bool recursive = false);
     EUTIL_API bool GetFileAttributes(const char* path, unsigned int& attributes);
     EUTIL_API bool SetFileAttributes(const char* path, unsigned int attributes);
