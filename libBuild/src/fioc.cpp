@@ -53,7 +53,7 @@ namespace eutil::fioc
     EUTIL_API bool CreateDirectory(const char* path)
     {
         std::filesystem::path p(path);
-        if(p.has_filename())
+        if(p.has_extension())
             return false;
 
         return std::filesystem::create_directory(path);
@@ -63,7 +63,7 @@ namespace eutil::fioc
     {
         std::filesystem::path p(path);
         //cut filename and extension if exists
-        if(p.has_filename())
+        if(p.has_extension())
             p = p.parent_path();
 
         if(p.empty())
@@ -75,7 +75,7 @@ namespace eutil::fioc
     EUTIL_API bool RemoveDirectory(const char* path)
     {
         std::filesystem::path p(path);
-        if(p.has_filename())
+        if(p.has_extension())
             return false;
 
         return std::filesystem::remove(path);
@@ -84,7 +84,7 @@ namespace eutil::fioc
     EUTIL_API void CopyDirectory(const char* src, const char* dst)
     {
         std::filesystem::path s(src), d(dst);
-        if(s.has_filename() || d.has_filename())
+        if(s.has_extension() || d.has_extension())
             return;
 
         std::filesystem::copy(src, dst, std::filesystem::copy_options::recursive);
@@ -93,7 +93,7 @@ namespace eutil::fioc
     EUTIL_API void MoveDirectory(const char* src, const char* dst)
     {
         std::filesystem::path s(src), d(dst);
-        if(s.has_filename() || d.has_filename())
+        if(s.has_extension() || d.has_extension())
             return;
 
         std::filesystem::rename(src, dst);
