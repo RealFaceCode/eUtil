@@ -208,14 +208,10 @@ namespace eutil::fioc
         for(auto& entry : std::filesystem::directory_iterator(path))
         {
             if(entry.is_directory())
-            {
                 if(recursive)
                     GetFileList(entry.path().string().c_str(), files, recursive);
-            }
             else
-            {
                 files.push_back(entry.path().string());
-            }
         }
 
         return true;
