@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <string>
 #include "eutil/filesystem/fioc.hpp"
-#include "eutil/ahc.hpp"
+#include "eutil/buffer/ahc.hpp"
 
 namespace eutil::fios
 {
@@ -27,7 +27,6 @@ namespace eutil::fios
     {
         for(auto it = open_files.begin(); it != open_files.end();)
         {
-            auto f = it->second;
             if(!fioc::IsFileOpen(it->second))
                 it = open_files.erase(it);
             else
@@ -42,9 +41,13 @@ namespace eutil::fios
             return nullptr;
 
         bool succes = fioc::GetFileSize(path, size);
+        if(!succes)
+            return nullptr;
 
         uint8_t* data = nullptr;
-        fioc::ReadDataFromFileRaw(file, path, reinterpret_cast<void**>(&data) ,size, nullterminate ? size + 1 : size, close);
+        void* data_ptr = nullptr;
+        fioc::ReadDataFromFileRaw(file, path, &data_ptr, size, nullterminate ? size + 1 : size, close);
+        data = static_cast<uint8_t*>(data_ptr);
 
         if(nullterminate)
             data[size] = '\0';
