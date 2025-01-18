@@ -22,7 +22,7 @@ namespace eutil
             if (event.isHandled())
                 return false;
 
-            if (event.getType() == std::hash<std::string>{}(typeid(T).name()))
+            if (event.getType() == typeid(T).hash_code())
             {
                 if(callback(*(T*)&event))
                     event.setHandled();
