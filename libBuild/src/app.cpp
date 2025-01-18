@@ -1,25 +1,47 @@
 #include "eutil/app.hpp"
 
+#include "eutil/event/event.hpp"
+#include "eutil/event/eventdispatcher.hpp"
+#include "eutil/scene/scene.hpp"
+
 namespace eutil
 {
     void App::setUpdateInterval(double interval)
     {
-        updateInterval = interval / 1000.0;
+        uInterval = 1 / interval;
     }
 
     void App::setRenderInterval(double interval)
     {
-        renderInterval = interval / 1000.0;
+        rInterval = 1 / interval;
     }
 
-    void App::useIntervalUpdate(bool updateInterval)
+    void App::useUpdateInterval(bool updateInterval)
     {
-        useUpdateInterval = updateInterval;
+        useUInterval = updateInterval;
     }
 
-    void App::useIntervalRender(bool renderInterval)
+    void App::useRenderInterval(bool renderInterval)
     {
-        useRenderInterval = renderInterval;
+        useRInterval = renderInterval;
+    }
+
+    void App::setIntervals(double updateInterval, double renderInterval)
+    {
+        setUpdateInterval(updateInterval);
+        setRenderInterval(renderInterval);
+    }
+
+    void App::useIntervals(bool updateInterval, bool renderInterval)
+    {
+        useUpdateInterval(updateInterval);
+        useRenderInterval(renderInterval);
+    }
+
+    void App::setIntervals(double updateInterval, double renderInterval, bool useUpdateInterval, bool useRenderInterval)
+    {
+        setIntervals(updateInterval, renderInterval);
+        useIntervals(useUpdateInterval, useRenderInterval);
     }
 
     void App::run(const std::string& initialSceneName, Scene* initialScene)
@@ -28,14 +50,15 @@ namespace eutil
         eventQueue = std::make_shared<std::queue<Event*>>();
         sceneManager.setEventQueue(eventQueue);
 
-        if(useUpdateInterval)
+        if(useUInterval)
         {
-            updateTimer.setSeconds(updateInterval);
+            updateTimer.setSeconds(uInterval);
             updateTimer.start();
         }
-        if(useRenderInterval)
+
+        if(useRInterval)
         {
-            renderTimer.setSeconds(renderInterval);
+            renderTimer.setSeconds(rInterval);
             renderTimer.start();
         }
 
@@ -50,16 +73,16 @@ namespace eutil
                 auto event = eventQueue->front();
                 eventQueue->pop();
 
-                onEvent(*event);
+                interOnEvent(*event);
                 sceneManager.runScenesEvent(*event);
 
                 delete event;
             }
 
             // Maybe use events for update and render
-            if(updateTimer.check())
+            if(updateTimer.check() || !useUInterval)
                 sceneManager.runScenesUpdate();
-            if(renderTimer.check())
+            if(renderTimer.check() || !useRInterval)
                 sceneManager.runScenesRender();
         }
 
@@ -69,5 +92,23 @@ namespace eutil
     void App::pushEvent(Event* event)
     {
         eventQueue->push(event);
+    }
+
+    void App::interOnEvent(Event& event)
+    {
+        EventDispatcher dispatcher(event);
+        dispatcher.dispatch<ScenePushEvent>([this](ScenePushEvent& e)
+        {
+            sceneManager.PushScene(e.name, e.scene);
+            return true;
+        });
+
+        dispatcher.dispatch<ScenePopEvent>([this](ScenePopEvent& e)
+        {
+            sceneManager.PopScene(e.name);
+            return true;
+        });
+
+        onEvent(event);
     }
 }

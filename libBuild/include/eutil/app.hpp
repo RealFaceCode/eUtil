@@ -1,7 +1,6 @@
 #pragma once
 
 #include "defines.hpp"
-#include "scene/scene.hpp"
 #include "scene/scenemanager.hpp"
 #include "eutil/signaltimer.hpp"
 
@@ -11,6 +10,7 @@
 namespace eutil
 {
     struct Event;
+    class Scene;
 
     class EUTIL_API App
     {
@@ -24,20 +24,24 @@ namespace eutil
 
         void setUpdateInterval(double interval);
         void setRenderInterval(double interval);
-        void useIntervalUpdate(bool updateInterval);
-        void useIntervalRender(bool renderInterval);
+        void useUpdateInterval(bool updateInterval);
+        void useRenderInterval(bool renderInterval);
+        void setIntervals(double updateInterval, double renderInterval);
+        void useIntervals(bool updateInterval, bool renderInterval);
+        void setIntervals(double updateInterval, double renderInterval, bool useUpdateInterval, bool useRenderInterval);
 
         virtual void run(const std::string& initialSceneName, Scene* initialScene);
         void pushEvent(Event* event);
 
     private:
+        void interOnEvent(Event& event);
         bool running;
         SceneManager sceneManager;
         std::shared_ptr<std::queue<Event*>> eventQueue;
-        double updateInterval;
-        double renderInterval;
-        bool useUpdateInterval;
-        bool useRenderInterval;
+        double uInterval    = 0;
+        double rInterval    = 0;
+        bool useUInterval   = false;
+        bool useRInterval   = false;
         SignalTimer updateTimer;
         SignalTimer renderTimer;
     };
