@@ -1,6 +1,6 @@
 #include "eutil/event/eventdispatcher.hpp"
 
-namespace eutil
+namespace util
 {
     EventDispatcher::EventDispatcher(Event& event)
         : event(event)

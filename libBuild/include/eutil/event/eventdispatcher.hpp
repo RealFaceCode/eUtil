@@ -4,7 +4,7 @@
 #include "eutil/event/event.hpp"
 #include <functional>
 
-namespace eutil
+namespace util
 {
     class EUTIL_API EventDispatcher
     {

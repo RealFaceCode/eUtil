@@ -6,7 +6,7 @@
 #include <cstring>
 
 
-namespace eutil::ahc
+namespace util
 {
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> WriteRules;
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> ReadRules;

@@ -1,6 +1,6 @@
 #include "eutil/buffer/idp.hpp"
 
-namespace eutil::idp
+namespace util
 {
     IDPool::IDPool()
         : m_minID(0), m_maxID(0)

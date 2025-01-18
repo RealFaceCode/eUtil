@@ -1,6 +1,6 @@
 #include "eutil/scene/scenemanager.hpp"
 
-namespace eutil
+namespace util
 {
     SceneManager::SceneManager(std::shared_ptr<std::queue<Event*>> eQueue)
     : eventQueue(eQueue)

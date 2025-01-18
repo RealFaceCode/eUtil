@@ -1,6 +1,6 @@
 #include "eutil/eutil.hpp"
 
-namespace eutil
+namespace util
 {
     EUTIL_API void Init()
     {}

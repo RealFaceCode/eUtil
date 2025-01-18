@@ -4,7 +4,7 @@
 
 #include "eutil/defines.hpp"
 
-namespace eutil
+namespace util
 {
     class EUTIL_API Timer
     {

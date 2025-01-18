@@ -6,9 +6,9 @@
 #include <queue>
 #include <memory>
 
-namespace eutil
+namespace util
 {
-        class Scene;
+    class Scene;
 
     struct ScenePushEvent : public Event
     {

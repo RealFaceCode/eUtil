@@ -1,6 +1,6 @@
 #include "eutil/time/time.hpp"
 
-namespace eutil
+namespace util
 {
     EUTIL_API std::string getCurrentTime(std::string_view format)
     {

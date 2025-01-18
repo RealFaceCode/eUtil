@@ -8,7 +8,7 @@
 #include <queue>
 #include <memory>
 
-namespace eutil
+namespace util
 {
     class EUTIL_API SceneManager
     {

@@ -5,16 +5,16 @@
 int main()
 {
     // Test code
-    if(!eutil::fioc::FileExists("test.txt"))
-        eutil::fioc::CreateFile("test.txt");
+    if(!util::FileExists("test.txt"))
+        util::CreateFile("test.txt");
 
     FILE* file = nullptr;
 
     std::string data = "Hello, World!";
-    eutil::fioc::WriteDataToFileRaw(&file, "test.txt", data.data(), data.size(), true);
+    util::WriteDataToFileRaw(&file, "test.txt", data.data(), data.size(), true);
 
     void* buffer = nullptr;
-    eutil::fioc::ReadDataFromFileRaw(&file, "test.txt", &buffer, data.size(), data.size() + 1, true);
+    util::ReadDataFromFileRaw(&file, "test.txt", &buffer, data.size(), data.size() + 1, true);
     char* bufferChar = (char*)(buffer);
     bufferChar[data.size()] = '\0';
     std::string readData((char*)(bufferChar));

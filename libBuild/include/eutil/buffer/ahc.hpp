@@ -7,7 +7,7 @@
 #include <typeinfo>
 #include "eutil/defines.hpp"
 
-namespace eutil::ahc
+namespace util
 {
 
     template<typename T> concept IsString_v = std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;

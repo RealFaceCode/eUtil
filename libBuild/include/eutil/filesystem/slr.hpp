@@ -5,7 +5,7 @@
 #include <string>
 #include "eutil/defines.hpp"
 
-namespace eutil::slr
+namespace util
 {
     EUTIL_API std::unordered_map<std::string, std::function<bool(void*, std::string_view)>>& GetSaveRules();
     EUTIL_API std::unordered_map<std::string, std::function<bool(void*, std::string_view)>>& GetLoadRules();

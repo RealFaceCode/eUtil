@@ -1,6 +1,6 @@
 #include "eutil/scene/scene.hpp"
 
-namespace eutil
+namespace util
 {
     Scene::Scene()
     : runUpdate(true), runRender(true), runEvent(true)

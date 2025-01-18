@@ -4,7 +4,7 @@
 #include <typeinfo>
 #include <string>
 
-namespace eutil
+namespace util
 {
     struct EUTIL_API Event
     {
@@ -27,6 +27,5 @@ namespace eutil
     private:
         bool handled = false;
         std::string name;
-        size_t type;
     };
 }

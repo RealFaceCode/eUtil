@@ -7,7 +7,7 @@
 #include <queue>
 #include <memory>
 
-namespace eutil
+namespace util
 {
     struct Event;
     class Scene;

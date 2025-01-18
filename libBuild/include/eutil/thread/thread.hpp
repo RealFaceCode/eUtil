@@ -12,9 +12,9 @@
 #include <iostream>
 #include <optional>
 
-#include "defines.hpp"
+#include "eutil/defines.hpp"
 
-namespace eutil
+namespace util
 {
     template<typename DATA, typename RESULT = int>
     struct Thread

@@ -6,7 +6,7 @@
 #include "eutil/filesystem/fioc.hpp"
 #include "eutil/buffer/ahc.hpp"
 
-namespace eutil::fios
+namespace util
 {
     static std::unordered_map<std::string, FILE*> open_files = {};
 
@@ -17,7 +17,7 @@ namespace eutil::fios
             return &it->second;
 
         FILE* file = nullptr;
-        fioc::open_file(path, mode, &file);
+        open_file(path, mode, &file);
         if(file != nullptr)
             open_files.emplace(path, file);
         return open_files.find(path) != open_files.end() ? &open_files[path] : nullptr; 
@@ -27,7 +27,7 @@ namespace eutil::fios
     {
         for(auto it = open_files.begin(); it != open_files.end();)
         {
-            if(!fioc::IsFileOpen(it->second))
+            if(!IsFileOpen(it->second))
                 it = open_files.erase(it);
             else
                 ++it;
@@ -40,13 +40,13 @@ namespace eutil::fios
         if(file == nullptr)
             return nullptr;
 
-        bool succes = fioc::GetFileSize(path, size);
+        bool succes = GetFileSize(path, size);
         if(!succes)
             return nullptr;
 
         uint8_t* data = nullptr;
         void* data_ptr = nullptr;
-        fioc::ReadDataFromFileRaw(file, path, &data_ptr, size, nullterminate ? size + 1 : size, close);
+        ReadDataFromFileRaw(file, path, &data_ptr, size, nullterminate ? size + 1 : size, close);
         data = static_cast<uint8_t*>(data_ptr);
 
         if(nullterminate)
@@ -57,12 +57,12 @@ namespace eutil::fios
         return data;
     }
 
-    EUTIL_API ahc::Array ReadDataFromFile(const char* path, bool close)
+    EUTIL_API Array ReadDataFromFile(const char* path, bool close)
     {
         size_t size = 0;
         uint8_t* data = ReadDataFromFile(path, size, false, close);
-        ahc::Array array = ahc::CreateArray(size);
-        ahc::WriteToArray(array, data, size);
+        Array array = CreateArray(size);
+        WriteToArray(array, data, size);
         free(data);
         return array;
     }
@@ -73,7 +73,7 @@ namespace eutil::fios
         if(file == nullptr)
             return false;
         
-        bool success = fioc::WriteDataToFileRaw(file, path, data, size, close);
+        bool success = WriteDataToFileRaw(file, path, data, size, close);
 
         updateMap();
 
@@ -86,7 +86,7 @@ namespace eutil::fios
         if(file == nullptr)
             return false;
         
-        bool success = fioc::AppendDataToFileRaw(file, path, data, size, close);
+        bool success = AppendDataToFileRaw(file, path, data, size, close);
 
         updateMap();
 

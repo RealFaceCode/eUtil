@@ -1,6 +1,6 @@
 #include "eutil/filesystem/slr.hpp"
 
-namespace eutil::slr
+namespace util
 {
     std::unordered_map<std::string, std::function<bool(void*, std::string_view)>> SaveRules;
     std::unordered_map<std::string, std::function<bool(void*, std::string_view)>> LoadRules;

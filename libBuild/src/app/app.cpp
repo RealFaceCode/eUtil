@@ -4,7 +4,7 @@
 #include "eutil/event/eventdispatcher.hpp"
 #include "eutil/scene/scene.hpp"
 
-namespace eutil
+namespace util
 {
     void App::setUpdateInterval(double interval)
     {

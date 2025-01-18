@@ -1,6 +1,6 @@
 #include "eutil/event/event.hpp"
 
-namespace eutil
+namespace util
 {
     bool Event::isHandled() const
     {

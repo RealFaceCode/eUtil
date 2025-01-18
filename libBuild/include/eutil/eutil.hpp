@@ -2,7 +2,7 @@
 
 #include "defines.hpp"
 
-namespace eutil
+namespace util
 {
     EUTIL_API void Init();
 }

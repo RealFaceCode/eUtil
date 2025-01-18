@@ -5,7 +5,7 @@
 #include <filesystem>
 #include "eutil/defines.hpp"
 
-namespace eutil::fioc 
+namespace util
 {
     EUTIL_API bool FileExists(const char* path);
     EUTIL_API bool FileExists(const std::filesystem::path& path);

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "thread.hpp"
-#include "defines.hpp"
+#include "eutil/defines.hpp"
 
-namespace eutil
+namespace util
 {
     template<typename DATA, typename RESULT = int>
     struct ThreadPool

@@ -1,6 +1,6 @@
 #include "eutil/time/signaltimer.hpp"
 
-namespace eutil
+namespace util
 {
     SignalTimer::SignalTimer(double seconds, double secondsActive)
         : m_seconds(seconds), m_secondsActive(secondsActive)

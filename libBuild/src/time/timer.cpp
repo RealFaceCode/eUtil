@@ -1,6 +1,6 @@
 #include "eutil/time/timer.hpp"
 
-namespace eutil
+namespace util
 {
     EUTIL_API Timer::Timer() = default;
 

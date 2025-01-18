@@ -4,10 +4,10 @@
 int main()
 {
     // Test code
-    eutil::fios::WriteDataToFile("test.txt", reinterpret_cast<const uint8_t*>("Hello, World!"), 13);
+    util::WriteDataToFile("test.txt", reinterpret_cast<const uint8_t*>("Hello, World!"), 13);
 
     size_t size = 0;
-    auto buffer = eutil::fios::ReadDataFromFile("test.txt", size, true);
+    auto buffer = util::ReadDataFromFile("test.txt", size, true);
 
     std::string readData((char*)(buffer));
 

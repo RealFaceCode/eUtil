@@ -6,7 +6,7 @@
 #include <memory>
 #include <cstdint>
 
-namespace eutil::idp
+namespace util
 {
     class ID;
 

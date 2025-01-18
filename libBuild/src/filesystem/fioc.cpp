@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <chrono>
 
-namespace eutil::fioc
+namespace util
 {
     EUTIL_API bool FileExists(const char* path)
     {
