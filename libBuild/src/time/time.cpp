@@ -1,4 +1,4 @@
-#include "eutil/util.hpp"
+#include "eutil/time/time.hpp"
 
 namespace eutil
 {
@@ -6,11 +6,14 @@ namespace eutil
     {
         auto now = std::chrono::system_clock::now();
         auto now_c = std::chrono::system_clock::to_time_t(now);
-        
-        std::tm const* localTime = std::localtime(&now_c);
         std::stringstream timeStringStream;
-        timeStringStream << std::put_time(localTime, format.data());
-        
+        std::tm localTime;
+#ifdef _WIN32
+        ::localtime_s(&localTime, &now_c);
+#elif __linux__
+        ::localtime_r(&now_c, &localTime);
+#endif
+        timeStringStream << std::put_time(&localTime, format.data());
         return timeStringStream.str();
     }
 
@@ -19,13 +22,18 @@ namespace eutil
         auto now = std::chrono::system_clock::now();
         auto now_c = std::chrono::system_clock::to_time_t(now);
         
-        std::tm const* localTime = std::localtime(&now_c);
+        std::tm localTime;
+#ifdef _WIN32
+        ::localtime_s(&localTime, &now_c);
+#elif __linux__
+        ::localtime_r(&now_c, &localTime);
+#endif
         
         std::stringstream timeStringStream;
-        timeStringStream << std::put_time(localTime, timeFormat.data());
+        timeStringStream << std::put_time(&localTime, timeFormat.data());
         
         std::stringstream dateStringStream;
-        dateStringStream << std::put_time(localTime, dateFormat.data());
+        dateStringStream << std::put_time(&localTime, dateFormat.data());
         
         return std::make_pair(timeStringStream.str(), dateStringStream.str());
     }
