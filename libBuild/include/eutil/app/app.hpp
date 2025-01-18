@@ -2,7 +2,7 @@
 
 #include "eutil/defines.hpp"
 #include "eutil/scene/scenemanager.hpp"
-#include "eutil/signaltimer.hpp"
+#include "eutil/time/signaltimer.hpp"
 
 #include <queue>
 #include <memory>
