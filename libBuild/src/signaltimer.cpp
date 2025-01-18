@@ -11,6 +11,11 @@ namespace eutil
         m_seconds = seconds;
     }
 
+    void SignalTimer::setSecondsActive(double secondsActive)
+    {
+        m_secondsActive = secondsActive;
+    }
+
     void SignalTimer::start()
     {
         m_running = true;

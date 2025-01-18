@@ -14,6 +14,7 @@ namespace eutil
         ~SignalTimer() = default;
 
         void setSeconds(double seconds);
+        void setSecondsActive(double secondsActive);
 
         void start();
         void stop();
