@@ -14,19 +14,14 @@ namespace eutil
         bool isHandled() const;
         void setHandled();
 
-        virtual std::size_t getType()
+        virtual size_t getType()
         {
-            if(name.empty())
-                name = std::string(typeid(*this).name());
-            if(type == 0)
-                type = std::hash<std::string>{}(name);
-            return type;
+            return typeid(*this).hash_code();
         }
+
         virtual std::string getName()
         {
-            if(name.empty())
-                name = std::string(typeid(*this).name());
-            return name;
+            return typeid(*this).name();
         }
 
     private:
