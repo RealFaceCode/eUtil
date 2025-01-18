@@ -6,9 +6,29 @@
 #include <queue>
 #include <memory>
 
-
 namespace eutil
 {
+        class Scene;
+
+    struct ScenePushEvent : public Event
+    {
+    public:
+        ScenePushEvent(const std::string& name, Scene* scene)
+        : name(name), scene(scene) {}
+
+        std::string name;
+        Scene* scene;
+    };
+
+    struct ScenePopEvent : public Event
+    {
+    public:
+        explicit ScenePopEvent(const std::string& name)
+        : name(name) {}
+
+        std::string name;
+    };
+
     class EUTIL_API Scene
     {
     public:
