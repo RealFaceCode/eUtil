@@ -1,7 +1,7 @@
 #pragma once
 
-#include "defines.hpp"
-#include "scene/scenemanager.hpp"
+#include "eutil/defines.hpp"
+#include "eutil/scene/scenemanager.hpp"
 #include "eutil/signaltimer.hpp"
 
 #include <queue>

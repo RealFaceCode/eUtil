@@ -1,6 +1,6 @@
 #include "../test_util.hpp"
 
-#include "eutil/fioc.hpp"
+#include "eutil/filesystem/fioc.hpp"
 
 int main()
 {
@@ -13,7 +13,6 @@ int main()
     std::string data = "Hello, World!";
     eutil::fioc::WriteDataToFileRaw(&file, "test.txt", data.data(), data.size(), true);
 
-    size_t size = 0;
     void* buffer = nullptr;
     eutil::fioc::ReadDataFromFileRaw(&file, "test.txt", &buffer, data.size(), data.size() + 1, true);
     char* bufferChar = (char*)(buffer);

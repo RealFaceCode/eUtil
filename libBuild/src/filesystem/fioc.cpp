@@ -1,4 +1,4 @@
-#include "eutil/fioc.hpp"
+#include "eutil/filesystem/fioc.hpp"
 #include <filesystem>
 #include <fstream>
 #include <sys/stat.h>
@@ -22,11 +22,11 @@ namespace eutil::fioc
             return false;
         
         FILE* file = nullptr;
-        fopen_s(&file, path, "w");
+        ::fopen_s(&file, path, "w");
         if(file == nullptr)
             return false;
 
-        fclose(file);
+        ::fclose(file);
         return true;
     }
 
@@ -40,7 +40,7 @@ namespace eutil::fioc
         if(file == nullptr)
             return false;
 
-        fclose(file);
+        ::fclose(file);
         return true;
     }
 
@@ -208,8 +208,10 @@ namespace eutil::fioc
         for(auto& entry : std::filesystem::directory_iterator(path))
         {
             if(entry.is_directory())
+            {
                 if(recursive)
                     GetFileList(entry.path().string().c_str(), files, recursive);
+            }
             else
                 files.push_back(entry.path().string());
         }
@@ -277,7 +279,7 @@ namespace eutil::fioc
         if(FileExists(path) && IsFileOpen(*file))
             return false;
         
-        auto err = fopen_s(file, path, mode);
+        auto err = ::fopen_s(file, path, mode);
         return err == 0;
     }
 
@@ -285,7 +287,7 @@ namespace eutil::fioc
     {
         if(IsFileOpen(*file) && close)
         {
-            fclose(*file);
+            ::fclose(*file);
             *file = nullptr;
         }
     }
@@ -298,19 +300,19 @@ namespace eutil::fioc
         if(asize < fsize)
             asize = fsize;
 
-        *data = malloc(asize);
+        *data = ::malloc(asize);
         if(data == nullptr)
         {
             close_file(file, close);
             return false;
         }
 
-        auto rsize = fread(*data, 1, fsize, *file);
+        auto rsize = ::fread(*data, 1, fsize, *file);
         close_file(file, close);
 
         if(rsize != fsize)
         {
-            free(*data);
+            ::free(*data);
             return false;
         }
 
@@ -325,20 +327,20 @@ namespace eutil::fioc
         if(asize < fsize)
             asize = fsize;
 
-        *data = malloc(asize);
+        *data = ::malloc(asize);
         if(data == nullptr)
         {
             close_file(file, close);
             return false;
         }
 
-        fseek(*file, readOffset, SEEK_SET);
-        auto rsize = fread(*data, 1, fsize, *file);
+        ::fseek(*file, static_cast<long>(readOffset), SEEK_SET);
+        auto rsize = ::fread(*data, 1, fsize, *file);
         close_file(file, close);
 
         if(rsize != fsize)
         {
-            free(*data);
+            ::free(*data);
             return false;
         }
 
@@ -350,7 +352,7 @@ namespace eutil::fioc
         if(!IsFileOpen(*file))
             open_file(path, "wb", file);
 
-        auto wsize = fwrite(data, 1, size, *file);
+        auto wsize = ::fwrite(data, 1, size, *file);
         close_file(file, close);
 
         return wsize == size;
@@ -361,7 +363,7 @@ namespace eutil::fioc
         if(!IsFileOpen(*file))
             open_file(path, "ab", file);
 
-        auto wsize = fwrite(data, 1, size, *file);
+        auto wsize = ::fwrite(data, 1, size, *file);
         close_file(file, close);
 
         return wsize == size;

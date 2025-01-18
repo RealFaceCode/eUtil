@@ -1,4 +1,4 @@
-#include "eutil/app.hpp"
+#include "eutil/app/app.hpp"
 
 #include "eutil/event/event.hpp"
 #include "eutil/event/eventdispatcher.hpp"

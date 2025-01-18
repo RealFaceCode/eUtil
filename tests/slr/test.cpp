@@ -1,6 +1,6 @@
 #include "../test_util.hpp"
 #include "eutil/slr.hpp"
-#include "eutil/fios.hpp"
+#include "eutil/filesystem/fios.hpp"
 
 int main()
 {
