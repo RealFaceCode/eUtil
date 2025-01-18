@@ -9,9 +9,11 @@ namespace eutil
     class EUTIL_API SignalTimer
     {
     public:
-        SignalTimer();
+        SignalTimer() = default;
         explicit SignalTimer(double seconds, double secondsActive = 0);
-        ~SignalTimer();
+        ~SignalTimer() = default;
+
+        void setSeconds(double seconds);
 
         void start();
         void stop();
