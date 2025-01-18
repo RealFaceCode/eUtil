@@ -1,6 +1,6 @@
 #include "../test_util.hpp"
 
-#include "eutil/filesystem/fioc.hpp"
+#include "eutil/filesystem/fileiocore.hpp"
 
 int main()
 {

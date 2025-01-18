@@ -1,6 +1,6 @@
 #include "../test_util.hpp"
-#include "eutil/filesystem/slr.hpp"
-#include "eutil/filesystem/fios.hpp"
+#include "eutil/filesystem/saveloadrule.hpp"
+#include "eutil/filesystem/fileiostream.hpp"
 
 int main()
 {

@@ -1,5 +1,5 @@
 #include "../test_util.hpp"
-#include "eutil/filesystem/fios.hpp"
+#include "eutil/filesystem/fileiostream.hpp"
 
 int main()
 {
