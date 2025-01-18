@@ -92,4 +92,24 @@ namespace util
 
         return success;
     }
+
+    EUTIL_API uint8_t* ReadDataFromFile(const std::filesystem::path& path, size_t& size, bool nullterminate, bool close)
+    {
+        return ReadDataFromFile(path.string().c_str(), size, nullterminate, close);
+    }
+
+    EUTIL_API Array ReadDataFromFile(const std::filesystem::path& path, bool close)
+    {
+        return ReadDataFromFile(path.string().c_str(), close);
+    }
+
+    EUTIL_API bool WriteDataToFile(const std::filesystem::path& path, const uint8_t* data, size_t size, bool close)
+    {
+        return WriteDataToFile(path.string().c_str(), data, size, close);
+    }
+
+    EUTIL_API bool AppendDataToFile(const std::filesystem::path& path, const uint8_t* data, size_t size, bool close)
+    {
+        return AppendDataToFile(path.string().c_str(), data, size, close);
+    }
 }
