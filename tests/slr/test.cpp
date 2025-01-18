@@ -1,5 +1,5 @@
 #include "../test_util.hpp"
-#include "eutil/slr.hpp"
+#include "eutil/filesystem/slr.hpp"
 #include "eutil/filesystem/fios.hpp"
 
 int main()
