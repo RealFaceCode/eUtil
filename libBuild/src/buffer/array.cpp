@@ -8,95 +8,184 @@
 
 namespace util
 {
-    std::unordered_map<std::string, std::function<bool(void*, Array&)>> WriteRules;
-    std::unordered_map<std::string, std::function<bool(void*, Array&)>> ReadRules;
-
-    EUTIL_API Array CreateArray(size_t capacityInBytes)
+    Array::Array(size_t capacityInBytes)
     {
-        Array array;
-        array.data = new uint8_t[capacityInBytes];
-        array.capacity = capacityInBytes;
-        ZeroArray(array);
-        return array;
+        arrData = new uint8_t[capacityInBytes];
+        arrCapacity = capacityInBytes;
+        reset();
     }
 
-    EUTIL_API void FreeArray(Array& array)
+    Array::Array(const Array& other)
     {
-        delete[] array.data;
-        array.data = nullptr;
-        array.size = 0;
-        array.capacity = 0;
-        array.readOffset = 0;
-        array.writeOffset = 0;
+        arrData = new uint8_t[other.arrCapacity];
+        arrCapacity = other.arrCapacity;
+        arrSize = other.arrSize;
+        wOffset = other.wOffset;
+        rOffset = other.rOffset;
+        ::memcpy(arrData, other.arrData, arrSize);
     }
 
-    EUTIL_API void ResizeArray(Array& array, size_t newCapacityInBytes)
+    Array::Array(Array&& other) noexcept
+    {
+        arrData = other.arrData;
+        arrCapacity = other.arrCapacity;
+        arrSize = other.arrSize;
+        wOffset = other.wOffset;
+        rOffset = other.rOffset;
+        other.arrData = nullptr;
+        other.arrCapacity = 0;
+        other.arrSize = 0;
+        other.wOffset = 0;
+        other.rOffset = 0;
+    }
+
+    Array::~Array()
+    {
+        delete[] arrData;
+    }
+
+    Array::operator bool() const
+    {
+        return arrData != nullptr;
+    }
+
+    Array& Array::operator=(const Array& other)
+    {
+        if(this != &other)
+        {
+            delete[] arrData;
+            arrData = new uint8_t[other.arrCapacity];
+            arrCapacity = other.arrCapacity;
+            arrSize = other.arrSize;
+            wOffset = other.wOffset;
+            rOffset = other.rOffset;
+            ::memcpy(arrData, other.arrData, arrSize);
+        }
+
+        return *this;
+    }
+
+    Array& Array::operator=(Array&& other) noexcept
+    {
+        if(this != &other)
+        {
+            delete[] arrData;
+            arrData = other.arrData;
+            arrCapacity = other.arrCapacity;
+            arrSize = other.arrSize;
+            wOffset = other.wOffset;
+            rOffset = other.rOffset;
+            other.arrData = nullptr;
+            other.arrCapacity = 0;
+            other.arrSize = 0;
+            other.wOffset = 0;
+            other.rOffset = 0;
+        }
+
+        return *this;
+    }
+
+    void Array::resize(size_t newCapacityInBytes)
     {
         uint8_t* newData = new uint8_t[newCapacityInBytes];
-        ZeroArray(array);
-        memcpy(newData, array.data, array.size);
-        delete[] array.data;
-        array.data = newData;
-        array.capacity = newCapacityInBytes;
+        zero();
+        ::memcpy(newData, arrData, arrSize);
+        delete[] arrData;
+        arrData = newData;
+        arrCapacity = newCapacityInBytes;
     }
 
-    EUTIL_API void WriteToArray(Array& array, const uint8_t* data, size_t size)
+    void Array::write(const uint8_t* data, size_t wSize)
     {
-        if(array.size + size > array.capacity)
-            ResizeArray(array, array.capacity + size);
+        if(arrSize + wSize > arrCapacity)
+            resize(arrCapacity + wSize);
 
-        memcpy(array.data + array.writeOffset, data, size);
-        array.writeOffset += size;
-        array.size += size;
+        ::memcpy(arrData + wOffset, data, wSize);
+        wOffset += wSize;
+        arrSize += wSize;
     }
 
-    EUTIL_API void WriteToArray(Array& array, void* data, size_t size)
+    void Array::write(void* data, size_t wSize)
     {
-        WriteToArray(array, reinterpret_cast<const uint8_t*>(data), size);
+        write(reinterpret_cast<const uint8_t*>(data), wSize);
     }
 
-    EUTIL_API void ReadFromArray(Array& array, uint8_t* data, size_t size)
+    void Array::read(uint8_t* data, size_t rSize)
     {
-        if(array.readOffset + size > array.size)
+        if(rOffset + rSize > arrSize)
             return;
 
-        memcpy(data, array.data + array.readOffset, size);
-        array.readOffset += size;
+        ::memcpy(data, arrData + rOffset, rSize);
+        rOffset += rSize;
     }
 
-    EUTIL_API void ReadFromArray(Array& array, void* data, size_t size)
+    void Array::read(void* data, size_t rSize)
     {
-        ReadFromArray(array, reinterpret_cast<uint8_t*>(data), size);
+        read(reinterpret_cast<uint8_t*>(data), rSize);
     }
 
-    EUTIL_API void SetArrayReadOffset(Array& array, size_t offset)
+    void Array::setWriteOffset(size_t writeOffset)
     {
-        array.readOffset = offset;
+        wOffset = writeOffset;
     }
 
-    EUTIL_API void SetArrayWriteOffset(Array& array, size_t offset)
+    void Array::setReadOffset(size_t readOffset)
     {
-        array.writeOffset = offset;
+        rOffset = readOffset;
     }
 
-    EUTIL_API void ResetArray(Array& array)
+    void Array::reset()
     {
-        array.size = 0;
-        array.readOffset = 0;
-        array.writeOffset = 0;
+        arrSize = 0;
+        wOffset = 0;
+        rOffset = 0;
     }
 
-    EUTIL_API void ZeroArray(Array& array)
+    void Array::zero()
     {
-        memset(array.data + array.size, 0, array.capacity - array.size);
+        ::memset(arrData, 0, arrCapacity);
     }
 
-    EUTIL_API std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetWriteRules()
+    void Array::clear()
+    {
+        reset();
+        zero();
+    }
+
+    const uint8_t* Array::data() const
+    {
+        return arrData;
+    }
+
+    size_t Array::capacity() const
+    {
+        return arrCapacity;
+    }
+
+    size_t Array::size() const
+    {
+        return arrSize;
+    }
+
+    size_t Array::writeOffset() const
+    {
+        return wOffset;
+    }
+
+    size_t Array::readOffset() const
+    {
+        return rOffset;
+    }
+
+    std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::WriteRules;
+    std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::ReadRules;
+
+    std::unordered_map<std::string, std::function<bool(void*, Array&)>>& Array::GetWriteRules()
     {
         return WriteRules;
     }
 
-    EUTIL_API std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetReadRules()
+    std::unordered_map<std::string, std::function<bool(void*, Array&)>>& Array::GetReadRules()
     {
         return ReadRules;
     }
