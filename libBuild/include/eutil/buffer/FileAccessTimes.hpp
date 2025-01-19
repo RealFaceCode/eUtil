@@ -2,7 +2,7 @@
 
 namespace util
 {
-    struct FileAccesTimes
+    struct FileAccessTimes
     {
         unsigned long long creation;
         unsigned long long lastAccess;
