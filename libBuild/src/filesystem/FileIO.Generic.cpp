@@ -273,13 +273,11 @@ namespace util
         return files;
     }
 
-    bool GetFileSize(const std::filesystem::path& path, unsigned long long& size)
+    size_t GetFileSize(const std::filesystem::path& path)
     {
         if (!FileExist(path))
-            return false;
-
-        size = std::filesystem::file_size(path);
-        return true;
+            return -1;
+        return std::filesystem::file_size(path);
     }
 
     std::optional<FileAccessTimes> GetFileTime(const std::filesystem::path& path)

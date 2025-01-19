@@ -30,7 +30,7 @@ namespace util
 
     EUTIL_API std::vector<std::filesystem::path> GetFileList(const std::filesystem::path& path, bool recursive = false);
 
-    EUTIL_API bool GetFileSize(const std::filesystem::path& path, unsigned long long& size);
+    EUTIL_API size_t GetFileSize(const std::filesystem::path& path);
     EUTIL_API std::optional<FileAccessTimes> GetFileTime(const std::filesystem::path& path);
     EUTIL_API bool SetFileTime(const std::filesystem::path& path, const FileAccessTimes& times);
     EUTIL_API std::optional<FilePermission> GetFilePermission(const std::filesystem::path& path);
