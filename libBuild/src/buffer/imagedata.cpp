@@ -9,8 +9,7 @@ namespace util
     ImageData::ImageData(unsigned int width, unsigned int height, unsigned int channels, const unsigned char* data)
         : imgWidth(width), imgHeight(height), imgChannels(channels), imgData({})
     {
-        CreateArray(width * height * channels);
-        WriteToArray(imgData, data, width * height * channels);
+        imgData.write(data, width * height * channels);
     }
 
     ImageData::ImageData(ImageData&& other) noexcept
@@ -24,7 +23,10 @@ namespace util
 
     ImageData::~ImageData()
     {
-        FreeArray(imgData);
+        imgWidth = 0;
+        imgHeight = 0;
+        imgChannels = 0;
+        imgData.clear();
     }
 
     void ImageData::set(unsigned int width, unsigned int height, unsigned int channels, const unsigned char* data)
@@ -32,7 +34,7 @@ namespace util
         imgWidth = width;
         imgHeight = height;
         imgChannels = channels;
-        WriteToArray(imgData, data, width * height * channels);
+        imgData.write(data, width * height * channels);
     }
 
     unsigned int ImageData::width() const
@@ -52,7 +54,7 @@ namespace util
 
     const unsigned char* ImageData::data() const
     {
-        return imgData.data;
+        return imgData.data();
     }
 
     ImageData& ImageData::operator=(const ImageData& other)
