@@ -152,6 +152,11 @@ namespace util
         zero();
     }
 
+    uint8_t* Array::ptr()
+    {
+        return arrData;
+    }
+
     const uint8_t* Array::data() const
     {
         return arrData;

@@ -134,8 +134,8 @@ namespace util
             ReadRules.erase(it);
             return true;
         }
-        
 
+        uint8_t* ptr();
         const uint8_t* data() const;
         size_t capacity() const;
         size_t size() const;
