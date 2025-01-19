@@ -9,7 +9,6 @@
 
 namespace util
 {
-
     template<typename T> concept IsString_v = std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
 
     struct EUTIL_API Array
