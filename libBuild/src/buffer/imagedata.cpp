@@ -57,6 +57,11 @@ namespace util
         return imgData.data();
     }
 
+    unsigned char* ImageData::ptr()
+    {
+        return imgData.ptr();
+    }
+
     ImageData& ImageData::operator=(const ImageData& other)
     {
         if(this != &other)

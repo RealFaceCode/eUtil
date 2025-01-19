@@ -20,6 +20,7 @@ namespace util
         unsigned int height() const;
         unsigned int channels() const;
         const unsigned char* data() const;
+        unsigned char* ptr();
 
         ImageData& operator=(const ImageData& other);
         ImageData& operator=(ImageData&& other) noexcept;
