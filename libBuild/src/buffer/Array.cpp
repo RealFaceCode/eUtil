@@ -105,7 +105,7 @@ namespace util
         arrSize += wSize;
     }
 
-    void Array::write(void* data, size_t wSize)
+    void Array::write(const void* data, size_t wSize)
     {
         write(reinterpret_cast<const uint8_t*>(data), wSize);
     }

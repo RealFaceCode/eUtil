@@ -15,7 +15,9 @@ namespace util
     template<typename T> concept IsArithmetic_v = std::is_arithmetic_v<T> || std::is_enum_v<T>;
     template<typename T> concept IsArithmeticVector_v = std::is_same_v<T, std::vector<uint8_t>> || std::is_same_v<T, std::vector<std::byte>> || std::is_same_v<T, std::vector<char>> || std::is_same_v<T, std::vector<int>> || std::is_same_v<T, std::vector<float>> || std::is_same_v<T, std::vector<double>>;
     template<typename T> concept IsStringVector_v = std::is_same_v<T, std::vector<std::string>> || std::is_same_v<T, std::vector<std::wstring>>;
-
+    template<typename T> concept IsCharPtr_v = std::is_pointer_v<T> && (std::is_same_v<typename std::remove_pointer_t<T>, char> || std::is_same_v<typename std::remove_pointer_t<T>, wchar_t> || std::is_same_v<typename std::remove_pointer_t<T>, char16_t> || std::is_same_v<typename std::remove_pointer_t<T>, char32_t>);
+    template<typename T> concept IsConstCharPtr_v = std::is_pointer_v<T> && (std::is_same_v<typename std::remove_pointer_t<T>, const char> || std::is_same_v<typename std::remove_pointer_t<T>, const wchar_t> || std::is_same_v<typename std::remove_pointer_t<T>, const char16_t> || std::is_same_v<typename std::remove_pointer_t<T>, const char32_t>);
+    
     struct EUTIL_API Array
     {
     public:
@@ -31,7 +33,7 @@ namespace util
 
         void resize(size_t newCapacityInBytes);
         void write(const uint8_t* data, size_t wRize);
-        void write(void* data, size_t wRize);
+        void write(const void* data, size_t wRize);
         void read(uint8_t* data, size_t rSize);
         void read(void* data, size_t rSize);
         void setWriteOffset(size_t wOffset);
@@ -84,6 +86,12 @@ namespace util
                     write(str.data(), wSize);
                 }
             }
+            else if constexpr(IsCharPtr_v<T> || IsConstCharPtr_v<T>)
+            {
+                size_t length = std::char_traits<typename std::remove_pointer_t<T>>::length(data);
+                write<size_t>(length);
+                write(data, length * sizeof(typename std::remove_pointer_t<T>));
+            }
             else
                 static_assert(false, "Unsupported type");
         }
@@ -108,7 +116,7 @@ namespace util
             }
             else if constexpr(IsCharVector_v<T>)
             {
-                std::vector<T> data;
+                T data;
                 size_t length = Read<size_t>();
                 data.resize(length);
                 read(data.data(), length);
@@ -128,7 +136,7 @@ namespace util
             }
             else if constexpr(IsArithmeticVector_v<T>)
             {
-                std::vector<T> data;
+                T data;
                 size_t length = Read<size_t>();
                 data.resize(length);
                 read(data.data(), length * sizeof(typename T::value_type));
@@ -136,9 +144,10 @@ namespace util
             }
             else if constexpr(IsStringVector_v<T>)
             {
-                std::vector<T> data;
+                T data;
                 size_t length = read<size_t>();
                 data.resize(length);
+
                 for(auto& str : data)
                 {
                     size_t strLength = read<size_t>();
@@ -146,6 +155,15 @@ namespace util
                     str.resize(strLength);
                     read(str.data(), rSize);
                 }
+
+                return data;
+            }
+            else if constexpr(IsCharPtr_v<T> || IsConstCharPtr_v<T>)
+            {
+                size_t length = read<size_t>();
+                T data = new typename std::remove_pointer_t<T>[length + 1];
+                read(data, length * sizeof(typename std::remove_pointer_t<T>));
+                data[length] = '\0';
                 return data;
             }
             else
