@@ -4,11 +4,11 @@
 int main()
 {
     // Test code
-    util::Array array = util::CreateArray(1024);
-    util::WriteToArray(array, std::string("Hello, World!"));
-    util::SetArrayReadOffset(array, 0);
+    util::Array array(1024);
+    array.write(std::string("Hello, World!"));
+    array.setReadOffset(0);
 
-    std::string readArray = util::ReadFromArray<std::string>(array);
+    std::string readArray = array.read<std::string>();
 
     compare("Hello, World!", readArray, "ahc Array test");
 

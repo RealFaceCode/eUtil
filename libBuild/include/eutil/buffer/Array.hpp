@@ -10,6 +10,11 @@
 namespace util
 {
     template<typename T> concept IsString_v = std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
+    template<typename T> concept IsCharVector_v = std::is_same_v<T, std::vector<uint8_t>> || std::is_same_v<T, std::vector<std::byte>> || std::is_same_v<T, std::vector<char>>;
+    template<typename T> concept IsChar_v = std::is_same_v<T, char> || std::is_same_v<T, wchar_t> || std::is_same_v<T, char16_t> || std::is_same_v<T, char32_t>;
+    template<typename T> concept IsArithmetic_v = std::is_arithmetic_v<T> || std::is_enum_v<T>;
+    template<typename T> concept IsArithmeticVector_v = std::is_same_v<T, std::vector<uint8_t>> || std::is_same_v<T, std::vector<std::byte>> || std::is_same_v<T, std::vector<char>> || std::is_same_v<T, std::vector<int>> || std::is_same_v<T, std::vector<float>> || std::is_same_v<T, std::vector<double>>;
+    template<typename T> concept IsStringVector_v = std::is_same_v<T, std::vector<std::string>> || std::is_same_v<T, std::vector<std::wstring>>;
 
     struct EUTIL_API Array
     {
@@ -39,13 +44,45 @@ namespace util
         void write(T data)
         {
             if constexpr(std::is_arithmetic_v<T>)
-                Write(&data, sizeof(T));
+                write(&data, sizeof(T));
             else if constexpr(IsString_v<T>)
             {
                 size_t length = data.size();
                 size_t wSize = std::is_same_v<T, std::string> ? length : length * sizeof(wchar_t);
-                Write<size_t>(length);
-                Write(data.data(), wSize);
+                write<size_t>(length);
+                write(data.data(), wSize);
+            }
+            else if constexpr(IsCharVector_v<T>)
+            {
+                size_t length = data.size();
+                write<size_t>(length);
+                write(data.data(), length);
+            }
+            else if constexpr(IsChar_v<T>)
+            {
+                write(&data, sizeof(T));
+            }
+            else if constexpr(IsArithmetic_v<T>)
+            {
+                write(&data, sizeof(T));
+            }
+            else if constexpr(IsArithmeticVector_v<T>)
+            {
+                size_t length = data.size();
+                write<size_t>(length);
+                write(data.data(), length * sizeof(typename T::value_type));
+            }
+            else if constexpr(IsStringVector_v<T>)
+            {
+                size_t length = data.size();
+                write<size_t>(length);
+                for(const auto& str : data)
+                {
+                    size_t strLength = str.size();
+                    size_t wSize = std::is_same_v<typename T::value_type, std::string> ? strLength : strLength * sizeof(wchar_t);
+                    write<size_t>(strLength);
+                    write(str.data(), wSize);
+                }
             }
             else
                 static_assert(false, "Unsupported type");
@@ -57,16 +94,58 @@ namespace util
             if constexpr(std::is_arithmetic_v<T>)
             {
                 T data;
-                Read(&data, sizeof(T));
+                read(&data, sizeof(T));
                 return data;
             }
             else if constexpr(IsString_v<T>)
             {
                 T data;
-                size_t length = Read<size_t>();
+                size_t length = read<size_t>();
                 size_t rSize = std::is_same_v<T, std::string> ? length : length * sizeof(wchar_t);
                 data.resize(length);
-                Read(data.data(), rSize);
+                read(data.data(), rSize);
+                return data;
+            }
+            else if constexpr(IsCharVector_v<T>)
+            {
+                std::vector<T> data;
+                size_t length = Read<size_t>();
+                data.resize(length);
+                read(data.data(), length);
+                return data;
+            }
+            else if constexpr(IsChar_v<T>)
+            {
+                T data;
+                read(&data, sizeof(T));
+                return data;
+            }
+            else if constexpr(IsArithmetic_v<T>)
+            {
+                T data;
+                read(&data, sizeof(T));
+                return data;
+            }
+            else if constexpr(IsArithmeticVector_v<T>)
+            {
+                std::vector<T> data;
+                size_t length = Read<size_t>();
+                data.resize(length);
+                read(data.data(), length * sizeof(typename T::value_type));
+                return data;
+            }
+            else if constexpr(IsStringVector_v<T>)
+            {
+                std::vector<T> data;
+                size_t length = read<size_t>();
+                data.resize(length);
+                for(auto& str : data)
+                {
+                    size_t strLength = read<size_t>();
+                    size_t rSize = std::is_same_v<typename T::value_type, std::string> ? strLength : strLength * sizeof(wchar_t);
+                    str.resize(strLength);
+                    read(str.data(), rSize);
+                }
                 return data;
             }
             else
