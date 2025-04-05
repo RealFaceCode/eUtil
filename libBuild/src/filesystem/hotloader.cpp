@@ -1,7 +1,7 @@
 #include "eutil/filesystem/hotloader.hpp"
-#include "eutil/filesystem/fileiocore.hpp"
-#include "eutil/filesystem/fileiostream.hpp"
-#include "eutil/buffer/array.hpp"
+#include "eutil/filesystem/FileIOGeneric.hpp"
+#include "eutil/filesystem/FileLoad.hpp"
+#include "eutil/buffer/Array.hpp"
 
 #include <print>
 
@@ -20,7 +20,7 @@ namespace util
 
     void HotLoader::addFile(const std::filesystem::path& filePath)
     {
-        if(!FileExists(filePath))
+        if(!FileExist(filePath))
             return;
 
         auto it = mFiles.find(filePath);
@@ -50,27 +50,19 @@ namespace util
 
     Array HotLoader::getFile(const std::filesystem::path& filePath)
     {
-        if (!FileExists(filePath))
+        if (!FileExist(filePath))
             return Array();
 
-        return ReadDataFromFile(filePath, false);
+        //return ReadDataFromFile(filePath, false);
     }
 
     std::string HotLoader::getFileAsString(const std::filesystem::path& filePath)
     {
-        if (!FileExists(filePath))
+        if (!FileExist(filePath))
             return "";
 
-        std::string data;
-        size_t size;
-        uint8_t* buffer = ReadDataFromFile(filePath, size, false);
-        if (buffer)
-        {
-            data = std::string(reinterpret_cast<char*>(buffer), size);
-            delete[] buffer;
-        }
 
-        return data;
+        return "";
     }
 
     void HotLoader::checkFiles()
