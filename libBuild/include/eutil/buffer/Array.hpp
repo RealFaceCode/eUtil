@@ -171,6 +171,19 @@ namespace util
         }
 
         template<typename T>
+        void operator << (T data)
+        {
+            write(data);
+        }
+
+        template<typename T> //TODO: fix me
+        friend Array& operator>>(Array& array, T& data)
+        {
+            data = array.read<T>();
+            return array;
+        }
+
+        template<typename T>
         bool writeRule(T& data)
         {
             std::string key = typeid(T).name();
