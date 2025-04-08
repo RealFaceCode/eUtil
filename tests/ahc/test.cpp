@@ -13,9 +13,9 @@ int main()
     int readInt = array.read<int>();
     std::vector<std::string> readArgs = array.read<std::vector<std::string>>();
 
-    ::compare("Hello, World!", readArray, "ahc Array test");
-    ::compare(42, readInt, "ahc Array test");
-    ::compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "ahc Array test");
+    ::compare("Hello, World!", readArray, "Failed String");
+    ::compare(42, readInt, "Failed Numeric");
+    ::compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "Failed Vector");
 
 
     // Test code
