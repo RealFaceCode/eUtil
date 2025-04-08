@@ -176,7 +176,7 @@ namespace util
             write(data);
         }
 
-        template<typename T> //TODO: fix me
+        template<typename T>
         friend Array& operator>>(Array& array, T& data)
         {
             data = array.read<T>();
