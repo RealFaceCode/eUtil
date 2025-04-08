@@ -17,7 +17,6 @@ int main()
     ::compare(42, readInt, "Failed Numeric");
     ::compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "Failed Vector");
 
-
     // Test code
     util::Array array2(1024);
     array2 << "array test";
