@@ -24,7 +24,8 @@ int main()
     array2 << "array test";
     
     std::string readString;
-    array >> readString;
+
+    array2 >> readString;
 
     ::compare("array test", readString, "Failed << >> operators");
 
