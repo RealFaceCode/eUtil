@@ -7,7 +7,8 @@ int main()
     util::Array array(1024);
     array.write("Hello, World!");
     array.write(42);
-    array.write(std::vector<std::string>{"arg1", "arg2"});
+    std::vector<std::string> argVec = {"arg1", "arg2"};
+    array.write(argVec);
 
     std::string readArray = array.read<std::string>();
     int readInt = array.read<int>();
@@ -15,7 +16,8 @@ int main()
 
     ::compare("Hello, World!", readArray, "Failed String");
     ::compare(42, readInt, "Failed Numeric");
-    ::compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "Failed Vector");
+    ::compare(argVec[0], readArgs[0], "Failed Vector");
+    ::compare(argVec[1], readArgs[1], "Failed Vector");
 
     // Test code
     util::Array array2(1024);
