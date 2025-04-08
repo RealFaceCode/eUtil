@@ -171,9 +171,10 @@ namespace util
         }
 
         template<typename T>
-        void operator << (T data)
+        friend Array& operator<<(Array& array, const T& data)
         {
-            write(data);
+            array.write(data);
+            return array;
         }
 
         template<typename T>
