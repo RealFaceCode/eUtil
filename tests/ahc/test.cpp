@@ -13,9 +13,19 @@ int main()
     int readInt = array.read<int>();
     std::vector<std::string> readArgs = array.read<std::vector<std::string>>();
 
-    compare("Hello, World!", readArray, "ahc Array test");
-    compare(42, readInt, "ahc Array test");
-    compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "ahc Array test");
+    ::compare("Hello, World!", readArray, "ahc Array test");
+    ::compare(42, readInt, "ahc Array test");
+    ::compare(std::vector<std::string>{"arg1", "arg2"}, readArgs, "ahc Array test");
+
+
+    // Test code
+    util::Array array2(1024);
+    array2 << "array test";
+    
+    std::string readString;
+    array >> readString;
+
+    ::compare("array test", readString, "Failed << >> operators");
 
     return ::FAILED;
 }
