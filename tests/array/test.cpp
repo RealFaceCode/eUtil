@@ -29,5 +29,38 @@ int main()
 
     ::compare("array test", readString, "Failed << >> operators");
 
+    // Test code
+
+    struct TestStruct
+    {
+        int a;
+        int b;
+    };
+
+    util::Array::AddReadRule<TestStruct>([](void* data, util::Array& array) -> bool
+    {
+        auto* test = static_cast<TestStruct*>(data);
+        array.read(test, sizeof(int) * 2);
+        return true;
+    });
+
+    util::Array::AddWriteRule<TestStruct>([](void* data, util::Array& array) -> bool
+    {
+        const auto* test = static_cast<const TestStruct*>(data);
+        array.write(test, sizeof(int) * 2);
+        return true;
+    });
+
+    TestStruct testStruct = {123, 456};
+    TestStruct readTestStruct;
+
+    util::Array array3(1024);
+
+    array3 << testStruct;
+    array3 >> readTestStruct;
+
+    ::compare(testStruct.a, readTestStruct.a, "Failed Struct");
+    ::compare(testStruct.b, readTestStruct.b, "Failed Struct");
+
     return ::FAILED;
 }
