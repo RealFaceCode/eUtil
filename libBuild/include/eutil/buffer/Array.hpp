@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <functional>
 #include <typeinfo>
+#include <optional>
+#include <assert.h>
+#include <print>
 #include "eutil/defines.hpp"
 
 namespace util
@@ -93,7 +96,26 @@ namespace util
                 write(data, length * sizeof(typename std::remove_pointer_t<T>));
             }
             else
-                static_assert(false, "Unsupported type");
+            {
+                auto result = writeRule(data);
+                if(!result)
+                {
+                    std::string key = typeid(T).name();
+                    std::print("{}{}\n", "Unsupported type: ", key);
+                    std::print("Please add a write rule for this type.\n");
+                    std::print("Example: Array::AddWriteRule<YourType>([](void* data, Array& array) -> bool {{\n");
+                    std::print("    YourType* yourData = static_cast<YourType*>(data);\n");
+                    std::print("    array.write(yourData, sizeof(YourType));\n");
+                    std::print("    return true;\n");
+                    std::print("}});\n");
+                    std::print("Or use a supported type.\n");
+
+                    std::print("Type: {}\n", typeid(T).name());
+                    std::print("Size: {}\n", sizeof(T));
+
+                    assert(false);
+                }
+            }
         }
 
         template<typename T>
@@ -167,7 +189,28 @@ namespace util
                 return data;
             }
             else
-                static_assert(false, "Unsupported type");
+            {
+                auto result = readRule<T>();
+                if(result.has_value())
+                    return result.value();
+                else
+                {
+                    std::string key = typeid(T).name();
+                    std::print("{}{}\n", "Unsupported type: ", key);
+                    std::print("Please add a read rule for this type.\n");
+                    std::print("Example: Array::AddReadRule<YourType>([](void* data, Array& array) -> bool {{\n");
+                    std::print("    YourType* yourData = static_cast<YourType*>(data);\n");
+                    std::print("    array.read(yourData, sizeof(YourType));\n");
+                    std::print("    return true;\n");
+                    std::print("}});\n");
+                    std::print("Or use a supported type.\n");
+
+                    std::print("Type: {}\n", typeid(T).name());
+                    std::print("Size: {}\n", sizeof(T));
+
+                    assert(false);
+                }
+            }
         }
 
         template<typename T>
@@ -196,16 +239,16 @@ namespace util
         }
 
         template<typename T>
-        T readRule()
+        std::optional<T> readRule()
         {
             std::string key = typeid(T).name();
             auto it = ReadRules.find(key);
             if(it == ReadRules.end())
-                return T{};
+                return std::nullopt;
 
             T data;
             if(!it->second(&data, *this))
-                return T{};
+                return std::nullopt;
 
             return data;
         }
