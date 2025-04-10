@@ -1,6 +1,7 @@
 # Current Features
 
 ## App
+
 - **`app.hpp`**
   - `App` class for managing the application lifecycle.
   - Support for event-driven architecture.
@@ -8,6 +9,7 @@
   - Configurable update and render intervals.
 
 ## Buffer
+
 - **`Array.hpp`**
   - `Array` class for flexible data storage and manipulation.
   - Support for writing and reading various data types, including strings, vectors, and custom types.
@@ -27,6 +29,7 @@
   - Integration with image loading and saving utilities.
 
 ## Event
+
 - **`event.hpp`**
   - Base `Event` class for creating custom event types.
   - Functions to check and set event handling status.
@@ -37,6 +40,7 @@
   - Support for type-based event callbacks.
 
 ## Filesystem
+
 - **`FileIOGeneric.hpp`**
   - Functions for file operations: create, remove, copy, move, and rename files.
   - Directory operations: create, remove, copy, move, and rename directories.
@@ -58,6 +62,7 @@
   - Functions to add, remove, and check modified files.
 
 ## Scene
+
 - **`scene.hpp`**
   - `Scene` class for managing individual scenes.
   - Virtual methods for attaching, detaching, updating, rendering, and handling events.
@@ -69,6 +74,7 @@
   - Support for pausing and resuming updates, rendering, and events for individual scenes.
 
 ## Thread
+
 - **`thread.hpp`**
   - `Thread` class for managing individual threads.
   - Support for custom task functions and thread-safe task queues.
@@ -80,6 +86,7 @@
   - Dynamic thread count adjustment and thread-safe result retrieval.
 
 ## Time
+
 - **`timer.hpp`**
   - `Timer` class for measuring elapsed time.
   - Functions to start, stop, reset, and retrieve elapsed time.
