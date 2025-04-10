@@ -44,7 +44,7 @@ int main()
         return true;
     });
 
-    util::Array::AddWriteRule<TestStruct>([](void* data, util::Array& array) -> bool
+    util::Array::AddWriteRule<TestStruct>([](const void* data, util::Array& array) -> bool
     {
         const auto* test = static_cast<const TestStruct*>(data);
         array.write(test, sizeof(int) * 2);
