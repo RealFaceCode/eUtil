@@ -138,7 +138,7 @@ namespace util
         return std::filesystem::exists(path);
     }
 
-    bool CreateFile(const std::filesystem::path& path)
+    bool CreateNewFile(const std::filesystem::path& path)
     {
         if (FileExist(path))
             return false;

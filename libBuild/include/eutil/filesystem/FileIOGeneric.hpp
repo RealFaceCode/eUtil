@@ -14,7 +14,7 @@ namespace util
 #pragma region Generic Functions
 
     EUTIL_API bool FileExist(const std::filesystem::path& path);
-    EUTIL_API bool CreateFile(const std::filesystem::path& path);
+    EUTIL_API bool CreateNewFile(const std::filesystem::path& path);
     EUTIL_API bool RemoveFile(const std::filesystem::path& path);
     EUTIL_API bool CopyFile(const std::filesystem::path& src, const std::filesystem::path& dst);
     EUTIL_API void MoveFile(const std::filesystem::path& src, const std::filesystem::path& dst);
