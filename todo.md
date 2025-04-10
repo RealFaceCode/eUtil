@@ -1,8 +1,9 @@
 # Current TODO´s
 
-- [ ] Rewrite file handling
-  - [ ] File struct
+- [x] Rewrite file handling
+  - [x] File struct
   - [x] Generics
   - [x] Writing
   - [x] Reading
   - [x] Hotloading
+- [x] Write own assert
