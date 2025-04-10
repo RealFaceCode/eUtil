@@ -1,7 +1,5 @@
 #include "eutil/filesystem/File.hpp"
-
-#include <cassert>
-
+#include "eutil/Assert.hpp"
 #include "eutil/filesystem/FileIOGeneric.hpp"
 
 namespace util
@@ -18,7 +16,10 @@ namespace util
         else if(!FileExist(path))
         {
             if(!CreateNewFile(path))
-                assert(false && "Failed to create file.");
+            {
+                auto errorMsg = std::format("Failed to create new file: {}", path.string());
+                ASSERT_MSG(false, errorMsg);
+            }
 
             accessTimes = GetFileTime(path).value_or(FileAccessTimes{});
             permission = GetFilePermission(path).value_or(FilePermission{});
