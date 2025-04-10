@@ -89,7 +89,7 @@ namespace util
     void Array::resize(size_t newCapacityInBytes)
     {
         uint8_t* newData = new uint8_t[newCapacityInBytes];
-        zero();
+        ::memset(newData, 0, newCapacityInBytes);
         ::memcpy(newData, arrData, arrSize);
         delete[] arrData;
         arrData = newData;
