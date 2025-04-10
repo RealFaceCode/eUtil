@@ -19,13 +19,13 @@ namespace util
         size_t size = GetFileSize(path);
         array.resize(size);
 
-        std::ifstream file(path, std::ios::binary);
+        std::fstream file(path, std::ios::binary); 
+        file.open(path, std::ios::in | std::ios::binary);
+        
         if(file.is_open())
         {
-            file.read(reinterpret_cast<char*>(array.ptr()), size);
+            array.readFrom(file, size);
             file.close();
-
-            array.setWriteOffset(size);
         }
         else
             return std::nullopt;
