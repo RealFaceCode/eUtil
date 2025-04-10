@@ -223,10 +223,10 @@ namespace util
         return arrSize == arrCapacity;
     }
 
-    std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::WriteRules;
+    std::unordered_map<std::string, std::function<bool(const void*, Array&)>> Array::WriteRules;
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::ReadRules;
 
-    std::unordered_map<std::string, std::function<bool(void*, Array&)>>& Array::GetWriteRules()
+    std::unordered_map<std::string, std::function<bool(const void*, Array&)>>& Array::GetWriteRules()
     {
         return WriteRules;
     }

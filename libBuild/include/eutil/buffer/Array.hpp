@@ -41,7 +41,7 @@ namespace util
         bool readFrom(std::fstream& file, size_t wSize);
 
         template<typename T>
-        void write(T data)
+        void write(const T& data)
         {
             if constexpr(std::is_arithmetic_v<T>)
                 write(&data, sizeof(T));
@@ -89,6 +89,12 @@ namespace util
                 size_t length = std::char_traits<typename std::remove_pointer_t<T>>::length(data);
                 write<size_t>(length);
                 write(data, length * sizeof(typename std::remove_pointer_t<T>));
+            }
+            else if constexpr(IsCharArray_v<T> || IsConstCharArray_v<T>)
+            {
+                size_t length = std::char_traits<typename std::remove_extent_t<T>>::length(data);
+                write<size_t>(length);
+                write(data, length * sizeof(typename std::remove_extent_t<T>));
             }
             else
             {
@@ -224,7 +230,7 @@ namespace util
         }
 
         template<typename T>
-        bool writeRule(T& data)
+        bool writeRule(const T& data)
         {
             std::string key = typeid(T).name();
             auto it = WriteRules.find(key);
@@ -250,7 +256,7 @@ namespace util
         }
 
         template<typename T>
-        static void AddWriteRule(const std::function<bool(void*, Array&)>& rule)
+        static void AddWriteRule(const std::function<bool(const void*, Array&)>& rule)
         {
             std::string key = typeid(T).name();
             WriteRules[key] = rule;
@@ -297,7 +303,7 @@ namespace util
         bool isEmpty() const;
         bool isFull() const;
 
-        static std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetWriteRules();
+        static std::unordered_map<std::string, std::function<bool(const void*, Array&)>>& GetWriteRules();
         static std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetReadRules();
 
     private:
@@ -307,7 +313,7 @@ namespace util
         size_t rOffset = 0;
         size_t wOffset = 0;
 
-        static std::unordered_map<std::string, std::function<bool(void*, Array&)>> WriteRules;
+        static std::unordered_map<std::string, std::function<bool(const void*, Array&)>> WriteRules;
         static std::unordered_map<std::string, std::function<bool(void*, Array&)>> ReadRules;
     };
 }
