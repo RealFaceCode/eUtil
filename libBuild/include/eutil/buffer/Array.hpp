@@ -289,6 +289,11 @@ namespace util
         size_t size() const;
         size_t writeOffset() const;
         size_t readOffset() const;
+        size_t remainingBytes() const;
+        size_t remainingBytesWrite() const;
+        size_t remainingBytesRead() const;
+        bool isEmpty() const;
+        bool isFull() const;
 
         static std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetWriteRules();
         static std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetReadRules();

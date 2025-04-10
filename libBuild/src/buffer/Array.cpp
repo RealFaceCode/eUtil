@@ -182,6 +182,31 @@ namespace util
         return rOffset;
     }
 
+    size_t Array::remainingBytes() const
+    {
+        return arrCapacity - arrSize;
+    }
+
+    size_t Array::remainingBytesWrite() const
+    {
+        return arrCapacity - wOffset;
+    }
+
+    size_t Array::remainingBytesRead() const
+    {
+        return arrSize - rOffset;
+    }
+
+    bool Array::isEmpty() const
+    {
+        return arrSize == 0;
+    }
+
+    bool Array::isFull() const
+    {
+        return arrSize == arrCapacity;
+    }
+
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::WriteRules;
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::ReadRules;
 
