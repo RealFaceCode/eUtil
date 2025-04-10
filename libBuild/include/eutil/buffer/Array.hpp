@@ -38,6 +38,8 @@ namespace util
         void zero();
         void clear();
 
+        bool readFrom(std::fstream& file, size_t wSize);
+
         template<typename T>
         void write(T data)
         {

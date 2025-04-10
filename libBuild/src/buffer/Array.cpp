@@ -5,6 +5,7 @@
 #include <functional>
 #include <string>
 #include <cstring>
+#include <fstream>
 
 namespace util
 {
@@ -150,6 +151,21 @@ namespace util
     {
         reset();
         zero();
+    }
+
+    bool Array::readFrom(std::fstream& file, size_t wSize)
+    {
+        if(!file.is_open())
+            return false;
+
+        file.read(reinterpret_cast<char*>(arrData + wOffset), wSize);
+        if(!file.good())
+            return false;
+
+        arrSize += wSize;
+        wOffset += wSize;
+
+        return true;
     }
 
     uint8_t* Array::ptr()
