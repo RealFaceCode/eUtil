@@ -305,6 +305,8 @@ namespace util
         bool isEmpty() const;
         bool isFull() const;
 
+        std::string toString() const;
+
         static std::unordered_map<std::string, std::function<bool(const void*, Array&)>>& GetWriteRules();
         static std::unordered_map<std::string, std::function<bool(void*, Array&)>>& GetReadRules();
 

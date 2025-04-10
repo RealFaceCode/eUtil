@@ -223,6 +223,21 @@ namespace util
         return arrSize == arrCapacity;
     }
 
+    std::string Array::toString() const
+    {
+        std::string result;
+        result.reserve(arrSize + 1);
+        result.resize(arrSize + 1);
+
+        auto src = reinterpret_cast<const char*>(arrData);
+        auto dest = result.data();
+
+        ::memcpy(dest, src, arrSize);
+        dest[arrSize] = '\0';
+
+        return result;
+    }
+
     std::unordered_map<std::string, std::function<bool(const void*, Array&)>> Array::WriteRules;
     std::unordered_map<std::string, std::function<bool(void*, Array&)>> Array::ReadRules;
 
