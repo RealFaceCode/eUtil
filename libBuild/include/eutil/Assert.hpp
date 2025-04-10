@@ -2,19 +2,10 @@
 
 #include "defines.hpp"
 #include <string>
-#include <cstdlib>
 
 namespace util
 {
-    inline void AssertFailed(const std::string& condition, const std::string& message, const std::string& file, int line)
-    {
-        if(!message.empty())
-            std::print("Assertion failed: {}\nFile: {}\nLine: {}\nMessage: {}\n", condition, file, line, message);
-        else
-            std::print("Assertion failed: {}\nFile: {}\nLine: {}\n", condition, file, line);
-
-        std::abort();
-    }
+    EUTIL_API void AssertFailed(const std::string& condition, const std::string& message, const std::string& file, int line);
 
     #if defined(__cpp_exceptions) && !defined(NDEBUG)
         #define ASSERT(condition) \
