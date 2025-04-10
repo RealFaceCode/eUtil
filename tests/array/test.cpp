@@ -1,5 +1,5 @@
 #include "../test_util.hpp"
-#include "eutil/buffer/array.hpp"
+#include "eutil/buffer/Array.hpp"
 
 int main()
 {
