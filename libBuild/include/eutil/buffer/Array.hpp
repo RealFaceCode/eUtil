@@ -202,6 +202,7 @@ namespace util
                     std::print("Size: {}\n", sizeof(T));
 
                     assert(false);
+                    return T{}; // Return default value if type is not supported
                 }
             }
         }
