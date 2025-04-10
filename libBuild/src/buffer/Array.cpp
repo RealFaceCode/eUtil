@@ -33,6 +33,7 @@ namespace util
         arrSize = other.arrSize;
         wOffset = other.wOffset;
         rOffset = other.rOffset;
+
         other.arrData = nullptr;
         other.arrCapacity = 0;
         other.arrSize = 0;
