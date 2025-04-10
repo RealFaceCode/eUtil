@@ -1,7 +1,7 @@
 #pragma once
 
 #include "eutil/defines.hpp"
-#include "eutil/buffer/array.hpp"
+#include "eutil/buffer/Array.hpp"
 
 namespace util
 {
