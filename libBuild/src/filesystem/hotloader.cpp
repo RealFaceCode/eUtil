@@ -53,7 +53,7 @@ namespace util
         if (!FileExist(filePath))
             return Array();
 
-        //return ReadDataFromFile(filePath, false);
+        return Array(); //TODO: Implement file reading logic
     }
 
     std::string HotLoader::getFileAsString(const std::filesystem::path& filePath)
@@ -62,7 +62,7 @@ namespace util
             return "";
 
 
-        return "";
+        return ""; //TODO: Implement file reading logic
     }
 
     void HotLoader::checkFiles()
